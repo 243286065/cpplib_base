@@ -7,14 +7,15 @@
 #include <functional>
 
 #include "src/base/base_export.h"
+#include "src/base/callback.h"
 #include "src/base/macros.h"
+#include "src/base/thread/message_loop.h"
 #include "src/base/thread/task_queue.h"
 
 namespace base {
 
 class BASE_EXPORT Thread {
  public:
-  typedef std::function<void()> TaskFunc;
   Thread();
   Thread(const std::string& thread_name);
   ~Thread();
@@ -22,22 +23,17 @@ class BASE_EXPORT Thread {
   std::string GetName() const { return name_; }
   void SetName(const std::string& thread_name) { name_ = thread_name; }
 
-  void RunLoop();
+  void Start();
   void Stop();
 
-  void PostTask(const TaskFunc& task);
-  void PostTask(const TaskFunc& task, const TaskFunc& callback);
+  void PostTask(const OnceCallback& task);
+  void PostTask(const OnceCallback& task, const OnceCallback& callback);
 
  private:
-  void Loop();
-
-	void DoStop();
-
   std::string name_;
-  std::atomic<uint64_t> thread_id_;
-  std::atomic_bool is_stopped_;
-  std::thread thread_;
-	TaskQueue task_queue_;
+  std::unique_ptr<std::thread> thread_;
+
+	MessageLoop message_loop_;
 
   DISALLOW_COPY_AND_ASSIGN(Thread);
 };

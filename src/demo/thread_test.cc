@@ -8,15 +8,16 @@ void printOnIO() {
             << base::GetCurrentThreadId() << std::endl;
 }
 
-void printOnUi(base::Thread * io_thread) {
-  std::cout << "--------------ui thread-----------------"
-            << base::GetCurrentThreadId() << std::endl;
-    io_thread->PostTask(printOnIO);
-}
-
 void printOnMain() {
   std::cout << "--------------main thread-----------------"
             << base::GetCurrentThreadId() << std::endl;
+}
+
+void printOnUi(base::MessageLoop* main_loop) {
+  std::cout << "--------------ui thread-----------------"
+            << base::GetCurrentThreadId() << std::endl;
+  // main_loop->PostTask(printOnMain);
+  main_loop->Stop();
 }
 
 int main() {
@@ -24,17 +25,23 @@ int main() {
 
   base::Thread thread_io;
 
-  thread_io.RunLoop();
-  thread_ui.RunLoop();
+  base::MessageLoop loop;
 
-  thread_io.PostTask(printOnIO);
-  thread_ui.PostTask(std::bind(printOnUi, &thread_io));
-  thread_io.PostTask(printOnIO);
-  thread_ui.PostTask(std::bind(printOnUi, &thread_io));
+  thread_io.Start();
+  thread_ui.Start();
 
-  thread_io.PostTask(printOnIO, std::bind(printOnUi, &thread_io));
-  //thread_ui.PostTask(printOnUi, printOnMain);
+  //   thread_io.PostTask(printOnIO);
+  //   thread_ui.PostTask(std::bind(printOnUi, &loop));
+  //   thread_io.PostTask(printOnIO);
+  //   thread_ui.PostTask(std::bind(printOnUi, &loop));
 
-  std::this_thread::sleep_for(std::chrono::seconds(10));
+  thread_io.PostTask(printOnIO, std::bind(printOnUi, &loop));
+  // thread_ui.PostTask(printOnUi, printOnMain);
+
+  // loop.PostTask(printOnMain);
+  // thread_io.PostTask(printOnIO, printOnMain);
+  loop.RunLoop();
+
+  //   std::this_thread::sleep_for(std::chrono::seconds(10));
   return 0;
 }

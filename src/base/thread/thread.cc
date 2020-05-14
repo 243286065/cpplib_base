@@ -1,67 +1,48 @@
 #include "src/base/thread/thread.h"
 
 #include "src/base/thread/closure.h"
-#include "src/base/thread/thread_manager.h"
 #include "src/base/thread/utils.h"
 
 namespace base {
 
 Thread::Thread() : Thread(std::string()) {}
 
-Thread::Thread(const std::string& thread_name) : is_stopped_(true) {
+Thread::Thread(const std::string& thread_name) {
   SetName(thread_name);
 }
 
 Thread::~Thread() {
-  if (!is_stopped_) {
-    Stop();
-  }
+  Stop();
 }
 
-void Thread::RunLoop() {
-  if (!is_stopped_) {
+void Thread::Start() {
+  if (thread_ && message_loop_.IsRunning()) {
+    // Already run
     return;
   }
-  is_stopped_ = false;
-  thread_ = std::move(std::thread(std::bind(&Thread::Loop, this)));
+
+  thread_.reset(
+      new std::thread(std::bind(&MessageLoop::RunLoop, &message_loop_)));
 }
 
 void Thread::Stop() {
-  PostTask(std::bind(&Thread::DoStop, this));
-
-  if (thread_.joinable()) {
-    thread_.join();
+  if (message_loop_.IsRunning()) {
+    message_loop_.Stop();
   }
-}
 
-void Thread::PostTask(const TaskFunc& task) {
-  Closure closure(task, nullptr);
-  task_queue_.PushTask(closure);
-}
-
-void Thread::PostTask(const TaskFunc& task, const TaskFunc& callback) {
-  Closure closure(task, callback);
-  task_queue_.PushTask(closure);
-}
-
-void Thread::Loop() {
-  thread_id_ = GetCurrentThreadId();
-  ThreadManagerSingleton::GetInstance()->RegisterCurrentThread(this);
-
-  // Run Loop
-  while (true) {
-    if (is_stopped_ && task_queue_.Empty()) {
-      break;
-    }
-
-    const Closure task = task_queue_.PopTask();
-    task.RunTask();
+  if (thread_ && thread_->joinable()) {
+    thread_->join();
   }
+
+	thread_.reset(nullptr);
 }
 
-void Thread::DoStop() {
-  is_stopped_ = true;
-  ThreadManagerSingleton::GetInstance()->UnRegisterThread(thread_id_);
+void Thread::PostTask(const OnceCallback& task) {
+  message_loop_.PostTask(task);
+}
+
+void Thread::PostTask(const OnceCallback& task, const OnceCallback& callback) {
+  message_loop_.PostTask(task, callback);
 }
 
 }  // namespace base

@@ -5,15 +5,14 @@
 #include <functional>
 
 #include "src/base/base_export.h"
+#include "src/base/callback.h"
 #include "src/base/macros.h"
 
 namespace base {
 
 class BASE_EXPORT Closure {
  public:
- 	typedef std::function<void()> TaskFunc;
-
-  Closure(const TaskFunc& task, const TaskFunc& callback);
+  Closure(const OnceCallback& task, const OnceCallback& callback);
   ~Closure();
 
   void RunTask() const;
@@ -22,8 +21,8 @@ class BASE_EXPORT Closure {
   void RunCallback() const;
 
   uint64_t from_thread_id_;
-  TaskFunc task_;
-  TaskFunc callback_;
+  OnceCallback task_;
+  OnceCallback callback_;
 };
 
 }  // namespace base

@@ -5,7 +5,7 @@ project(base)
 message("-- system arch:  ${CMAKE_SYSTEM_PROCESSOR}")
 message(STATUS "current platform: ${CMAKE_SYSTEM_NAME} ")
 
-add_definitions(-DOS_VERSION=${CMAKE_SYSTEM_NAME})
+add_definitions(-DOS_ARCH=${CMAKE_SYSTEM_NAME})
 
 IF (CMAKE_BUILD_TYPE STREQUAL Debug)
     add_definitions(-DDEBUG)
@@ -16,6 +16,14 @@ ELSE()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3 -pthread")
     message(STATUS "Compile Release")
 ENDIF()
+
+IF (WIN32)
+    add_definitions(-DOS_WIN=1)
+ELSEIF (APPLE)
+    add_definitions(-DOS_UNIX=1)
+ELSEIF (UNIX)
+    add_definitions(-DOS_UNIX=1)
+ENDIF ()
 
 set(PROJECT_OUTPUT_DIR ${PROJECT_BINARY_DIR}/${CMAKE_SYSTEM_PROCESSOR})
 message("-- output path:  ${PROJECT_OUTPUT_DIR} ")
@@ -38,8 +46,10 @@ set(
     ${PROJECT_SOURCE_DIR}/src/base/thread/task_queue.h
     ${PROJECT_SOURCE_DIR}/src/base/thread/thread.cc
     ${PROJECT_SOURCE_DIR}/src/base/thread/thread.h
-    ${PROJECT_SOURCE_DIR}/src/base/thread/thread_manager.cc
-    ${PROJECT_SOURCE_DIR}/src/base/thread/thread_manager.h
+    ${PROJECT_SOURCE_DIR}/src/base/thread/message_loop.cc
+    ${PROJECT_SOURCE_DIR}/src/base/thread/message_loop.h
+    ${PROJECT_SOURCE_DIR}/src/base/thread/message_loop_manager.cc
+    ${PROJECT_SOURCE_DIR}/src/base/thread/message_loop_manager.h
     ${PROJECT_SOURCE_DIR}/src/base/thread/utils.cc
     ${PROJECT_SOURCE_DIR}/src/base/thread/utils.h
 )
