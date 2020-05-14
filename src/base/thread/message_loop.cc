@@ -13,7 +13,7 @@ MessageLoop::~MessageLoop() {}
 void MessageLoop::RunLoop() {
   thread_id_ = GetCurrentThreadId();
   MessageLoopManagerSingleton::GetInstance()->RegisterMessageLoop(this);
-	is_stopped_ = false;
+  is_stopped_ = false;
 
   // Run Loop
   while (true) {

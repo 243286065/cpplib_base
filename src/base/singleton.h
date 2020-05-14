@@ -1,5 +1,6 @@
-#ifndef BASE_SRC_BASE_SINGLETON_H_
-#define BASE_SRC_BASE_SINGLETON_H_
+#ifndef SRC_BASE_SINGLETON_H_
+#define SRC_BASE_SINGLETON_H_
+
 #include <memory>
 #include <mutex>
 
@@ -9,26 +10,26 @@
 namespace base {
 template <typename T>
 class BASE_EXPORT Singleton {
-	public:
-		~Singleton() {}
+ public:
+  ~Singleton() {}
 
-		static std::shared_ptr<T> GetInstance() {
-			if(!instance_) {
-				std::lock_guard<std::mutex> lock(mutex_);
-				if(!instance_) {
-					instance_ = std::make_shared<T>();
-				}
-			}
+  static std::shared_ptr<T> GetInstance() {
+    if (!instance_) {
+      std::lock_guard<std::mutex> lock(mutex_);
+      if (!instance_) {
+        instance_ = std::make_shared<T>();
+      }
+    }
 
-			return instance_;
-		}
+    return instance_;
+  }
 
-	private:
-		Singleton() {}
+ private:
+  Singleton() {}
 
-		static std::shared_ptr<T> instance_;
-		static std::mutex mutex_;
-		DISALLOW_COPY_AND_ASSIGN(Singleton);
+  static std::shared_ptr<T> instance_;
+  static std::mutex mutex_;
+  DISALLOW_COPY_AND_ASSIGN(Singleton);
 };
 
 template <typename T>
@@ -39,4 +40,4 @@ std::mutex Singleton<T>::mutex_;
 
 }  // namespace base
 
-#endif	// BASE_SRC_BASE_SINGLETON_H_
+#endif  // SRC_BASE_SINGLETON_H_

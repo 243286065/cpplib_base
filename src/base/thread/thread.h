@@ -1,10 +1,12 @@
-#ifndef BASE_SRC_BASE_THREAD_THREAD_H_
-#define BASE_SRC_BASE_THREAD_THREAD_H_
+#ifndef SRC_BASE_THREAD_THREAD_H_
+#define SRC_BASE_THREAD_THREAD_H_
 
 #include <atomic>
-#include <mutex>
-#include <thread>
 #include <functional>
+#include <memory>
+#include <mutex>
+#include <string>
+#include <thread>
 
 #include "src/base/base_export.h"
 #include "src/base/callback.h"
@@ -33,11 +35,11 @@ class BASE_EXPORT Thread {
   std::string name_;
   std::unique_ptr<std::thread> thread_;
 
-	MessageLoop message_loop_;
+  MessageLoop message_loop_;
 
   DISALLOW_COPY_AND_ASSIGN(Thread);
 };
 
 }  // namespace base
 
-#endif  // BASE_SRC_BASE_THREAD_THREAD_H_
+#endif  // SRC_BASE_THREAD_THREAD_H_

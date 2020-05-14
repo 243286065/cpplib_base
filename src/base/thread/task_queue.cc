@@ -17,20 +17,20 @@ void TaskQueue::PushTask(const Closure& task) {
 }
 
 const Closure TaskQueue::PopTask() {
-	std::unique_lock<std::mutex> lock(mutex_);
-	while(task_queue_.empty()) {
-		cond_.wait(lock);
-	}
+  std::unique_lock<std::mutex> lock(mutex_);
+  while (task_queue_.empty()) {
+    cond_.wait(lock);
+  }
 
-	auto task = task_queue_.front();
-	task_queue_.pop();
+  auto task = task_queue_.front();
+  task_queue_.pop();
 
-	return task;
+  return task;
 }
 
 bool TaskQueue::Empty() {
-	std::lock_guard<std::mutex> lock(mutex_);
-	return task_queue_.empty();
+  std::lock_guard<std::mutex> lock(mutex_);
+  return task_queue_.empty();
 }
 
 }  // namespace base

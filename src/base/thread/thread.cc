@@ -34,7 +34,7 @@ void Thread::Stop() {
     thread_->join();
   }
 
-	thread_.reset(nullptr);
+  thread_.reset(nullptr);
 }
 
 void Thread::PostTask(const OnceCallback& task) {

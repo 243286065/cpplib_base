@@ -1,5 +1,7 @@
 #include "src/base/thread/closure.h"
 
+#include <utility>
+
 #include "src/base/thread/message_loop.h"
 #include "src/base/thread/message_loop_manager.h"
 #include "src/base/thread/utils.h"

@@ -1,5 +1,5 @@
-#ifndef BASE_SRC_BASE_MARCOS_H
-#define BASE_SRC_BASE_MARCOS_H
+#ifndef SRC_BASE_MACROS_H_
+#define SRC_BASE_MACROS_H_
 
 // A macro to disallow the copy constructor and operator= functions
 // This should be used in the private: declarations for a class
@@ -7,4 +7,4 @@
   TypeName(const TypeName&);               \
   void operator=(const TypeName&)
 
-#endif  // BASE_SRC_BASE_MARCOS_H
+#endif  // SRC_BASE_MACROS_H_

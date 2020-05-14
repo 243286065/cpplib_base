@@ -1,8 +1,8 @@
-#ifndef BASE_SRC_BASE_THREAD_CLOSURE_H
-#define BASE_SRC_BASE_THREAD_CLOSURE_H
+#ifndef SRC_BASE_THREAD_CLOSURE_H_
+#define SRC_BASE_THREAD_CLOSURE_H_
 
-#include <memory>
 #include <functional>
+#include <memory>
 
 #include "src/base/base_export.h"
 #include "src/base/callback.h"
@@ -27,4 +27,4 @@ class BASE_EXPORT Closure {
 
 }  // namespace base
 
-#endif  // BASE_SRC_BASE_THREAD_CLOSURE_H
+#endif  // SRC_BASE_THREAD_CLOSURE_H_
