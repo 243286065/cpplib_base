@@ -2,7 +2,7 @@
 
 #include "src/base/thread/closure.h"
 #include "src/base/thread/message_loop_manager.h"
-#include "src/base/thread/utils.h"
+#include "src/base/utils.h"
 
 namespace base {
 
@@ -54,7 +54,7 @@ void MessageLoop::PostTaskAndReply(const OnceCallback& task,
 }
 
 void MessageLoop::BindToCurrentThread() {
-	thread_id_ = GetThreadId();
+	thread_id_ = GetTaskCurrentThreadId();
   MessageLoopManagerSingleton::GetInstance()->RegisterMessageLoop(this);
 }
 

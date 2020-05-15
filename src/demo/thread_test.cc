@@ -1,21 +1,22 @@
 #include "src/base/thread/thread.h"
-#include "src/base/thread/utils.h"
+#include "src/base/utils.h"
+#include "src/base/log/logging.h"
 
 #include <iostream>
 
 void printOnIO() {
-  std::cout << "--------------io thread-----------------"
-            << base::GetThreadId() << std::endl;
+  LOG(INFO) << "--------------io thread-----------------"
+            << base::GetTaskCurrentThreadId();
 }
 
 void printOnMain() {
-  std::cout << "--------------main thread-----------------"
-            << base::GetThreadId() << std::endl;
+  LOG(INFO) << "--------------main thread-----------------"
+            << base::GetTaskCurrentThreadId();
 }
 
 void printOnUi(base::MessageLoop* main_loop) {
-  std::cout << "--------------ui thread-----------------"
-            << base::GetThreadId() << std::endl;
+  LOG(INFO) << "--------------ui thread-----------------"
+            << base::GetTaskCurrentThreadId();
   // main_loop->PostTask(printOnMain);
   main_loop->Stop();
 }
@@ -30,11 +31,11 @@ int count(int start, int end) {
 }
 
 void printResult(int sum) {
-    std::cout << "-------sum-------" << sum << std::endl;
+    LOG(INFO) << "-------sum-------" << sum;
 }
 
 void test() {
-    std::cout << "------------------------------START------------------------------------------" << std::endl;
+    LOG(WARNING) << "------------------------------START------------------------------------------";
     base::Thread thread_ui;
 
   base::Thread thread_io;
@@ -63,10 +64,16 @@ void test() {
   // loop.PostTask(printOnMain);
   // thread_io.PostTaskAndReply(printOnIO, printOnMain);
   loop.RunLoop();
-  std::cout << "------------------------------END------------------------------------------" << std::endl;
+  LOG(INFO) << "------------------------------END------------------------------------------";
+  //LOG(FATAL) << 123;
+  LOG(DEBUG) << 12345;
+  DLOG(WARNING) << "---DLOG----";
+  //CHECK(1 == 2);
+  DCHECK(1==2);
 }
 
 int main() {
+  logging::InitLogging("test.log", logging::LOG_TO_BOTH_FILE_AND_SYSTEM_DEBUG_LOG, logging::APPEND_TO_OLD_LOG_FILE);
   while(true) {
       test();
   }

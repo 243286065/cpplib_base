@@ -1,7 +1,7 @@
 #include "src/base/thread/message_loop_manager.h"
 
 #include "src/base/thread/message_loop.h"
-#include "src/base/thread/utils.h"
+#include "src/base/utils.h"
 
 namespace base {
 
@@ -15,7 +15,7 @@ MessageLoop* MessageLoopManager::GetMessageLoop(uint64_t thread_id) {
 }
 
 void MessageLoopManager::RegisterMessageLoop(MessageLoop* thread) {
-  auto tid = GetThreadId();
+  auto tid = GetTaskCurrentThreadId();
   std::lock_guard<std::mutex> lock(loop_hashmap_mutex_);
   loop_hashmap_[tid] = thread;
 }

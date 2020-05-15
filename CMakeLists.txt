@@ -50,8 +50,12 @@ set(
     ${PROJECT_SOURCE_DIR}/src/base/thread/message_loop.h
     ${PROJECT_SOURCE_DIR}/src/base/thread/message_loop_manager.cc
     ${PROJECT_SOURCE_DIR}/src/base/thread/message_loop_manager.h
-    ${PROJECT_SOURCE_DIR}/src/base/thread/utils.cc
-    ${PROJECT_SOURCE_DIR}/src/base/thread/utils.h
+    ${PROJECT_SOURCE_DIR}/src/base/utils.cc
+    ${PROJECT_SOURCE_DIR}/src/base/utils.h
+    ${PROJECT_SOURCE_DIR}/src/base/log/logging.cc
+    ${PROJECT_SOURCE_DIR}/src/base/log/logging.h
+    ${PROJECT_SOURCE_DIR}/src/base/file/file_utils.cc
+    ${PROJECT_SOURCE_DIR}/src/base/file/file_utils.h
 )
 include_directories(${PROJECT_SOURCE_DIR})
 

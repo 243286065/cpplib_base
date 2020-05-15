@@ -1,7 +1,7 @@
 #include "src/base/thread/thread.h"
 
 #include "src/base/thread/closure.h"
-#include "src/base/thread/utils.h"
+#include "src/base/utils.h"
 
 namespace base {
 
