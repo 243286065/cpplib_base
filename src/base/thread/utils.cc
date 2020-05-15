@@ -11,7 +11,7 @@
 #endif
 
 namespace base {
-uint64_t GetCurrentThreadId() {
+uint64_t GetThreadId() {
   // std::ostringstream stream;
   // stream << std::this_thread::get_id();
   // std::string stid = stream.str();

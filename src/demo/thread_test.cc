@@ -5,17 +5,17 @@
 
 void printOnIO() {
   std::cout << "--------------io thread-----------------"
-            << base::GetCurrentThreadId() << std::endl;
+            << base::GetThreadId() << std::endl;
 }
 
 void printOnMain() {
   std::cout << "--------------main thread-----------------"
-            << base::GetCurrentThreadId() << std::endl;
+            << base::GetThreadId() << std::endl;
 }
 
 void printOnUi(base::MessageLoop* main_loop) {
   std::cout << "--------------ui thread-----------------"
-            << base::GetCurrentThreadId() << std::endl;
+            << base::GetThreadId() << std::endl;
   // main_loop->PostTask(printOnMain);
   main_loop->Stop();
 }

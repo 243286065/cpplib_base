@@ -9,7 +9,7 @@
 
 namespace base {
 template <typename T>
-class BASE_EXPORT Singleton {
+class Singleton {
  public:
   ~Singleton() {}
 

@@ -8,7 +8,7 @@
 
 namespace base {
 Closure::Closure(const OnceCallback& task, const OnceCallback& callback)
-    : from_thread_id_(GetCurrentThreadId()),
+    : from_thread_id_(GetThreadId()),
       task_(std::move(task)),
       callback_(std::move(callback)) {}
 

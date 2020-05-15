@@ -54,7 +54,7 @@ void MessageLoop::PostTaskAndReply(const OnceCallback& task,
 }
 
 void MessageLoop::BindToCurrentThread() {
-	thread_id_ = GetCurrentThreadId();
+	thread_id_ = GetThreadId();
   MessageLoopManagerSingleton::GetInstance()->RegisterMessageLoop(this);
 }
 

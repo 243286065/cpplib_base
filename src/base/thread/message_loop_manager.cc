@@ -15,7 +15,7 @@ MessageLoop* MessageLoopManager::GetMessageLoop(uint64_t thread_id) {
 }
 
 void MessageLoopManager::RegisterMessageLoop(MessageLoop* thread) {
-  auto tid = GetCurrentThreadId();
+  auto tid = GetThreadId();
   std::lock_guard<std::mutex> lock(loop_hashmap_mutex_);
   loop_hashmap_[tid] = thread;
 }

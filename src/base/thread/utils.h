@@ -7,7 +7,7 @@
 
 namespace base {
 
-uint64_t BASE_EXPORT GetCurrentThreadId();
+uint64_t BASE_EXPORT GetThreadId();
 
 }  // namespace base
 #endif  // SRC_BASE_THREAD_UTILS_H_
