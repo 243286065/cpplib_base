@@ -13,6 +13,8 @@
 
 namespace base {
 
+class Thread;
+
 class BASE_EXPORT MessageLoop {
  public:
   MessageLoop();
@@ -25,14 +27,25 @@ class BASE_EXPORT MessageLoop {
   void Stop();
 
   void PostTask(const OnceCallback& task);
-  void PostTask(const OnceCallback& task, const OnceCallback& callback);
+  void PostTaskAndReply(const OnceCallback& task, const OnceCallback& callback);
 
   bool IsRunning() { return !is_stopped_; }
 
+  // When using MessageLoop alone, because RunLoop will enter the loop, if you
+  // want to perform some operations before RunLoop and you
+  // want to avoid missing tasks thrown by other threads, please use
+  // BindToCurrentThread as early as possible
+  void BindToCurrentThread();
+  void UnBindToCurrentThread();
+
  private:
+  void RunLoopInternal(std::function<void()> callback);
+
   std::atomic<uint64_t> thread_id_;
   std::atomic_bool is_stopped_;
   TaskQueue task_queue_;
+
+  friend Thread;
 
   DISALLOW_COPY_AND_ASSIGN(MessageLoop);
 };
