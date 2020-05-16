@@ -1,7 +1,7 @@
 #ifndef SRC_BASE_FILE_FILE_UTILS_H_
 #define SRC_BASE_FILE_FILE_UTILS_H_
 
-#include "src/base/base_export.h"
+#include "base/base_export.h"
 
 namespace base {
 BASE_EXPORT void DeleteFilePath(const char* file_path);

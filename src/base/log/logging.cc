@@ -1,7 +1,7 @@
-#include "src/base/log/logging.h"
+#include "base/log/logging.h"
 
-#include "src/base/file/file_utils.h"
-#include "src/base/utils.h"
+#include "base/file/file_utils.h"
+#include "base/utils.h"
 
 #include <string.h>
 

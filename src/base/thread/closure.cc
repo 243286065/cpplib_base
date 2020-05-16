@@ -1,10 +1,10 @@
-#include "src/base/thread/closure.h"
+#include "base/thread/closure.h"
 
 #include <utility>
 
-#include "src/base/thread/message_loop_manager.h"
-#include "src/base/thread/message_loop.h"
-#include "src/base/utils.h"
+#include "base/thread/message_loop_manager.h"
+#include "base/thread/message_loop.h"
+#include "base/utils.h"
 
 namespace base {
 Closure::Closure(const OnceCallback& task, const OnceCallback& callback)

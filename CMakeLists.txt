@@ -57,7 +57,7 @@ set(
     ${PROJECT_SOURCE_DIR}/src/base/file/file_utils.cc
     ${PROJECT_SOURCE_DIR}/src/base/file/file_utils.h
 )
-include_directories(${PROJECT_SOURCE_DIR})
+include_directories(${PROJECT_SOURCE_DIR}/src)
 
 add_library(
         ${PROJECT_NAME}

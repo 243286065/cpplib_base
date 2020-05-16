@@ -8,11 +8,11 @@
 #include <string>
 #include <thread>
 
-#include "src/base/base_export.h"
-#include "src/base/callback.h"
-#include "src/base/macros.h"
-#include "src/base/thread/message_loop.h"
-#include "src/base/thread/task_queue.h"
+#include "base/base_export.h"
+#include "base/callback.h"
+#include "base/macros.h"
+#include "base/thread/message_loop.h"
+#include "base/thread/task_queue.h"
 
 namespace base {
 

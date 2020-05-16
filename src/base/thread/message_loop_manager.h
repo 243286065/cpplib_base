@@ -3,9 +3,9 @@
 #include <memory>
 #include <unordered_map>
 
-#include "src/base/base_export.h"
-#include "src/base/macros.h"
-#include "src/base/singleton.h"
+#include "base/base_export.h"
+#include "base/macros.h"
+#include "base/singleton.h"
 
 namespace base {
 

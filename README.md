@@ -14,9 +14,9 @@ make
 # 开发计划
 类或函数 | 文件 | 说明 | 完成情况
 -- | -- | -- | --
-MessageLoop | src/base/thread/message_loop.h | 消息循环队列 | 已完成
-Thread | src/base/thread/thread.h | 基于消息循环的线程 | 已完成
-LOG | src/base/log/logging.h | 日志 | 已完成
+MessageLoop | base/thread/message_loop.h | 消息循环队列 | 已完成
+Thread | base/thread/thread.h | 基于消息循环的线程 | 已完成
+LOG | base/log/logging.h | 日志 | 已完成
 
 # 常用类说明
 ## MessageLoop
@@ -24,7 +24,7 @@ LOG | src/base/log/logging.h | 日志 | 已完成
 
 ### 示例
 ```
-#include "src/base/thread/message_loop.h"
+#include "base/thread/message_loop.h"
 
 base::MessageLoop loop;
 loop.BindToCurrentThread();
@@ -48,7 +48,7 @@ PostTaskAndReply | 抛任务,带回调,抛出的任务执行完后,**回调函�
 
 ### 示例
 ```
-#include "src/base/thread/thread.h"
+#include "base/thread/thread.h"
 
 base::Thread thread_io;
 thread_io.Start();
@@ -71,7 +71,7 @@ PostTask/PostTaskAndReply | 抛任务 | 对MessageLoop借口的封装
 
 使用示例:
 ```
-#include "src/base/log/logging.h"
+#include "base/log/logging.h"
 
 // 初始化日志配置
 logging::InitLogging("test.log", logging::LOG_TO_BOTH_FILE_AND_SYSTEM_DEBUG_LOG, logging::APPEND_TO_OLD_LOG_FILE);

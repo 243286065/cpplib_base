@@ -4,8 +4,8 @@
 #include <memory>
 #include <mutex>
 
-#include "src/base/base_export.h"
-#include "src/base/macros.h"
+#include "base/base_export.h"
+#include "base/macros.h"
 
 namespace base {
 template <typename T>

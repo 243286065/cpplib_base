@@ -5,8 +5,8 @@
 #include <mutex>
 #include <queue>
 
-#include "src/base/macros.h"
-#include "src/base/thread/closure.h"
+#include "base/macros.h"
+#include "base/thread/closure.h"
 
 namespace base {
 

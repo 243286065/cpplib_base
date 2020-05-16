@@ -1,6 +1,6 @@
-#include "src/base/thread/thread.h"
-#include "src/base/utils.h"
-#include "src/base/log/logging.h"
+#include "base/thread/thread.h"
+#include "base/utils.h"
+#include "base/log/logging.h"
 
 #include <iostream>
 
@@ -60,6 +60,7 @@ void test() {
 
   thread_io.PostTaskAndReply(printOnIO, std::bind(printOnUi, &loop));
   // thread_ui.PostTaskAndReply(printOnUi, printOnMain);
+  thread_ui.PostTask(std::bind(printResult, 100));
 
   // loop.PostTask(printOnMain);
   // thread_io.PostTaskAndReply(printOnIO, printOnMain);
