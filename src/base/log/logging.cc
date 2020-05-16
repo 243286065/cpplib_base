@@ -27,7 +27,6 @@ std::string GetDefultLogFile() {
   return "debug_" + str_time + ".log";
 }
 
-static std::mutex g_mutex;
 static LogMessageHandlerFunction g_log_message_handler = nullptr;
 static LoggingDestination g_logging_destination = LOG_ONLY_TO_SYSTEM_DEBUG_LOG;
 static std::string g_log_file_name = GetDefultLogFile();
@@ -129,35 +128,30 @@ LogMessage::~LogMessage() {
   stream_ << std::endl;
   std::string message = stream_.str();
 
-  try {
-    std::lock_guard<std::mutex> lock(g_mutex);
-    if (g_log_message_handler &&
-        g_log_message_handler(severity_, file_.c_str(), line_,
-                              message.substr(offset_).c_str())) {
-      return;
-    }
+  if (g_log_message_handler &&
+      g_log_message_handler(severity_, file_.c_str(), line_,
+                            message.substr(offset_).c_str())) {
+    return;
+  }
 
-    if (g_logging_destination == LOG_ONLY_TO_FILE ||
-        g_logging_destination == LOG_TO_BOTH_FILE_AND_SYSTEM_DEBUG_LOG) {
-      // write to file
-      base::WriteFile(g_log_file_name.c_str(), message.c_str(), true);
-    }
+  if (g_logging_destination == LOG_ONLY_TO_FILE ||
+      g_logging_destination == LOG_TO_BOTH_FILE_AND_SYSTEM_DEBUG_LOG) {
+    // write to file
+    base::WriteFile(g_log_file_name.c_str(), message.c_str(), true);
+  }
 
-    if (g_logging_destination == LOG_ONLY_TO_SYSTEM_DEBUG_LOG ||
-        g_logging_destination == LOG_TO_BOTH_FILE_AND_SYSTEM_DEBUG_LOG) {
+  if (g_logging_destination == LOG_ONLY_TO_SYSTEM_DEBUG_LOG ||
+      g_logging_destination == LOG_TO_BOTH_FILE_AND_SYSTEM_DEBUG_LOG) {
 // Print to console
 #if defined(OS_WIN)
-      OutputDebugStringA(message.c_str());
+    OutputDebugStringA(message.c_str());
 #endif
-      fprintf(stderr, "%s", message.c_str());
-      fflush(stderr);
-    }
+    fwrite(message.c_str(), message.size(), 1, stderr);
+    fflush(stderr);
+  }
 
-    if (severity_ == LOG_FATAL) {
-      abort();
-    }
-  } catch (std::system_error& err) {
-    // TODO
+  if (severity_ == LOG_FATAL) {
+    abort();
   }
 }
 

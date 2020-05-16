@@ -69,11 +69,11 @@ void test() {
   LOG(DEBUG) << 12345;
   DLOG(WARNING) << "---DLOG----";
   //CHECK(1 == 2);
-  DCHECK(1==2);
+  DCHECK(true);
 }
 
 int main() {
-  logging::InitLogging("test.log", logging::LOG_TO_BOTH_FILE_AND_SYSTEM_DEBUG_LOG, logging::APPEND_TO_OLD_LOG_FILE);
+  logging::InitLogging("", logging::LOG_TO_BOTH_FILE_AND_SYSTEM_DEBUG_LOG, logging::APPEND_TO_OLD_LOG_FILE);
   while(true) {
       test();
   }
