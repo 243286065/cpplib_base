@@ -36,10 +36,20 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_OUTPUT_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_OUTPUT_DIR}/lib)
 
 set(
+    DepSrc
+    ${PROJECT_SOURCE_DIR}/src/base/third_party/modp_b64/modp_b64_data.h
+    ${PROJECT_SOURCE_DIR}/src/base/third_party/modp_b64/modp_b64.cc
+    ${PROJECT_SOURCE_DIR}/src/base/third_party/modp_b64/modp_b64.h
+)
+
+set(
     ProgrameSrc
+    ${DepSrc}
     ${PROJECT_SOURCE_DIR}/src/base/at_exit.cc
     ${PROJECT_SOURCE_DIR}/src/base/at_exit.h
     ${PROJECT_SOURCE_DIR}/src/base/base_export.h
+    ${PROJECT_SOURCE_DIR}/src/base/encode/base64.cc
+    ${PROJECT_SOURCE_DIR}/src/base/encode/base64.h
     ${PROJECT_SOURCE_DIR}/src/base/file/file_utils.cc
     ${PROJECT_SOURCE_DIR}/src/base/file/file_utils.h
     ${PROJECT_SOURCE_DIR}/src/base/log/logging.cc

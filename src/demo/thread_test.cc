@@ -2,6 +2,7 @@
 #include "base/utils.h"
 #include "base/log/logging.h"
 #include "base/at_exit.h"
+#include "base/encode/base64.h"
 
 #include <iostream>
 
@@ -75,11 +76,8 @@ void test_thread() {
 }
 
 
-
-
-
-int main() {
-  base::AtExitManager exit_manager;
+void test_atexit() {
+    base::AtExitManager exit_manager;
 
   base::AtExitManager::RegisterCallback(std::bind(printResult, 100));
   base::AtExitManager::RegisterCallback(std::bind(printResult, 101));
@@ -96,11 +94,27 @@ int main() {
   base::AtExitManager::RegisterCallback(std::bind(printResult, 107));
   base::AtExitManager::RegisterCallback(std::bind(printResult, 108));
   base::AtExitManager::RegisterCallback(std::bind(printResult, 109));
+}
+
+void test_base64() {
+  std::string input = "121321321asdadadsadsad";
+  std::string result = base::Base64Encode(input);
+  std::string output;
+  bool valid = base::Base64Decode(result, &output);
+  LOG(WARNING) << input;
+  LOG(WARNING) << result;
+  LOG(WARNING) << valid << "-----" << output;
+}
+
+
+int main() {
+
 
   // logging::InitLogging("", logging::LOG_TO_BOTH_FILE_AND_SYSTEM_DEBUG_LOG, logging::APPEND_TO_OLD_LOG_FILE);
   // while(true) {
   //     test_thread();
   // }
   //   std::this_thread::sleep_for(std::chrono::seconds(10));
+  test_base64();
   return 0;
 }

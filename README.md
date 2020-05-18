@@ -19,6 +19,7 @@ Thread | base/thread/thread.h | 基于消息循环的线程 | 已完成
 LOG | base/log/logging.h | 日志 | 已完成
 Singleton | base/singleton.h | 单例模板类 | 已完成
 AtExitManager | base/at_exit.h | 注册退出函数   | 已完成
+Base64Encode/Base64Decode | base/encode/base64.h | base64加密和解密 | 已完成
 ElapsedTimer | base/timer/elapsed_timer.h | 计时器 | 待开发
 Timer | base/timer/timer.h  | 定时器 | 待开发
 
@@ -171,4 +172,29 @@ int main() {
 -- | -- | --
 RegisterCallback | 静态函数,注册退出时回调 | 调用顺序和注册顺序相反
 RunCallbacksNow | 静态函数,立即执行当前`AtExitManager`对象中注册的回调 |
+
+## Base64
+提供简单的base64加密解解密功能,主要copy自chromium中的实现.
+
+示例:
+```
+#include "base/log/logging.h"
+#include "base/encode/base64.h"
+
+
+std::string input = "121321321asdadadsadsad";
+std::string result = base::Base64Encode(input);
+std::string output;
+bool valid = base::Base64Decode(result, &output);
+LOG(WARNING) << input;
+LOG(WARNING) << result;
+LOG(WARNING) << valid << "-----" << output;
+```
+
+输出结果:
+```
+[22337:22337:0518/192643.265964:WARNING:thread_test.cc(104)] 121321321asdadadsadsad
+[22337:22337:0518/192643.266039:WARNING:thread_test.cc(105)] MTIxMzIxMzIxYXNkYWRhZHNhZHNhZA==
+[22337:22337:0518/192643.266075:WARNING:thread_test.cc(106)] 1-----121321321asdadadsadsad
+```
 
