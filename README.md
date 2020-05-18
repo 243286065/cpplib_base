@@ -12,6 +12,7 @@ make
 ```
 
 # 开发计划
+先列着,慢慢来吧~~~  
 类或函数 | 文件 | 说明 | 完成情况
 -- | -- | -- | --
 MessageLoop | base/thread/message_loop.h | 消息循环队列 | 已完成
@@ -20,8 +21,21 @@ LOG | base/log/logging.h | 日志 | 已完成
 Singleton | base/singleton.h | 单例模板类 | 已完成
 AtExitManager | base/at_exit.h | 注册退出函数   | 已完成
 Base64Encode/Base64Decode | base/encode/base64.h | base64加密和解密 | 已完成
+Md5Sum | base/encode/md5.h | md5散列 | 待开发
+Hash  | base/encode/hash.h | hash散列 | 待开发
+ThreadPool | base/thread/thread_pool | 基于消息循环线程的线程池 | 待开发
 ElapsedTimer | base/timer/elapsed_timer.h | 计时器 | 待开发
 Timer | base/timer/timer.h  | 定时器 | 待开发
+Json | base/json.h | Json库封装 | 待开发
+File | base/file/file.h | 文件跨平台封装 | 待开发
+IPCHandler | base/ipc/ipc_handler.h | 封装跨平台进程间通信 | 待开发
+Process | base/process/process.h | 封装跨平台进程创建和运行 | 待开发
+TCPServer | base/net/tcp_server.h | 封装跨平台tcp server(两种网络模型) | 待开发
+TCPClient | base/net/tcp_client.h | 封装跨平台tcp client | 待开发
+UDPServer | base/net/udp_server.h |封装跨平台udp server |待开发
+UDPClient | base/net/udp_client.h| 封装跨平台udp client|待开发
+Metrics | base/metrics.h | 封装数据统计接口 | 待开发
+
 
 # 常用类说明
 ## MessageLoop
@@ -197,4 +211,10 @@ LOG(WARNING) << valid << "-----" << output;
 [22337:22337:0518/192643.266039:WARNING:thread_test.cc(105)] MTIxMzIxMzIxYXNkYWRhZHNhZHNhZA==
 [22337:22337:0518/192643.266075:WARNING:thread_test.cc(106)] 1-----121321321asdadadsadsad
 ```
+
+### 接口
+函数或接口 | 说明 | 注意事项
+-- | -- | --
+Base64Encode | base64加密函数 | 
+Base64Decode | base64解密函数 | 输出注意是string指针
 
