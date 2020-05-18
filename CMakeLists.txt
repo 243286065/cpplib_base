@@ -37,25 +37,27 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_OUTPUT_DIR}/lib)
 
 set(
     ProgrameSrc
+    ${PROJECT_SOURCE_DIR}/src/base/at_exit.cc
+    ${PROJECT_SOURCE_DIR}/src/base/at_exit.h
     ${PROJECT_SOURCE_DIR}/src/base/base_export.h
+    ${PROJECT_SOURCE_DIR}/src/base/file/file_utils.cc
+    ${PROJECT_SOURCE_DIR}/src/base/file/file_utils.h
+    ${PROJECT_SOURCE_DIR}/src/base/log/logging.cc
+    ${PROJECT_SOURCE_DIR}/src/base/log/logging.h
     ${PROJECT_SOURCE_DIR}/src/base/macros.h
     ${PROJECT_SOURCE_DIR}/src/base/singleton.h
     ${PROJECT_SOURCE_DIR}/src/base/thread/closure.cc
     ${PROJECT_SOURCE_DIR}/src/base/thread/closure.h
+    ${PROJECT_SOURCE_DIR}/src/base/thread/message_loop_manager.cc
+    ${PROJECT_SOURCE_DIR}/src/base/thread/message_loop_manager.h
+    ${PROJECT_SOURCE_DIR}/src/base/thread/message_loop.cc
+    ${PROJECT_SOURCE_DIR}/src/base/thread/message_loop.h
     ${PROJECT_SOURCE_DIR}/src/base/thread/task_queue.cc
     ${PROJECT_SOURCE_DIR}/src/base/thread/task_queue.h
     ${PROJECT_SOURCE_DIR}/src/base/thread/thread.cc
     ${PROJECT_SOURCE_DIR}/src/base/thread/thread.h
-    ${PROJECT_SOURCE_DIR}/src/base/thread/message_loop.cc
-    ${PROJECT_SOURCE_DIR}/src/base/thread/message_loop.h
-    ${PROJECT_SOURCE_DIR}/src/base/thread/message_loop_manager.cc
-    ${PROJECT_SOURCE_DIR}/src/base/thread/message_loop_manager.h
     ${PROJECT_SOURCE_DIR}/src/base/utils.cc
     ${PROJECT_SOURCE_DIR}/src/base/utils.h
-    ${PROJECT_SOURCE_DIR}/src/base/log/logging.cc
-    ${PROJECT_SOURCE_DIR}/src/base/log/logging.h
-    ${PROJECT_SOURCE_DIR}/src/base/file/file_utils.cc
-    ${PROJECT_SOURCE_DIR}/src/base/file/file_utils.h
 )
 include_directories(${PROJECT_SOURCE_DIR}/src)
 

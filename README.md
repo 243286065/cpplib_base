@@ -17,6 +17,10 @@ make
 MessageLoop | base/thread/message_loop.h | 消息循环队列 | 已完成
 Thread | base/thread/thread.h | 基于消息循环的线程 | 已完成
 LOG | base/log/logging.h | 日志 | 已完成
+Singleton | base/singleton.h | 单例模板类 | 已完成
+AtExitManager | base/at_exit.h | 注册退出函数   | 已完成
+ElapsedTimer | base/timer/elapsed_timer.h | 计时器 | 待开发
+Timer | base/timer/timer.h  | 定时器 | 待开发
 
 # 常用类说明
 ## MessageLoop
@@ -97,4 +101,74 @@ DCHECK | DEBUG模式下才会生效的CHECK|
 ### 优化方向
 * 日志文件大小限制,包括单个文件大小和总的日志文件大小;
 * 合并写入日志文件,减少写文件操作.
+
+## Singleton
+一个简单的单例类模板,使用了锁保证创建单例对象的线程安全,但是不保证其他对象逻辑线程安全.
+
+使用示例:
+```
+#include "base/singleton.h"
+
+class A {...};
+typedef Singleton<A> ASingleton;
+
+ASingleton::GetInstance()->...
+```
+
+只为了在项目中创建单例类方便,很简单,没什么好讲的.
+
+
+## AtExitManager
+其作用类似atexit(),即在声明周期结束后执行所注册的回调。在该对象的生命周期内可注册多个回调函数，在对象销毁时所有的注册函数按照出栈的形式来调用。
+
+示例:
+```
+#include "base/at_exit.h"
+#include "base/log/logging.h"
+
+void printResult(int sum) {
+    LOG(INFO) << "-------sum-------" << sum;
+}
+
+int main() {
+    base::AtExitManager exit_manager;
+
+    base::AtExitManager::RegisterCallback(std::bind(printResult, 100));
+    base::AtExitManager::RegisterCallback(std::bind(printResult, 101));
+    base::AtExitManager::RegisterCallback(std::bind(printResult, 102));
+
+    {
+        base::AtExitManager exit_manager_2;
+        base::AtExitManager::RegisterCallback(std::bind(printResult, 103));
+        base::AtExitManager::RegisterCallback(std::bind(printResult, 104));
+        base::AtExitManager::RegisterCallback(std::bind(printResult, 105));
+    }
+
+    base::AtExitManager exit_manager_3;
+    base::AtExitManager::RegisterCallback(std::bind(printResult, 107));
+    base::AtExitManager::RegisterCallback(std::bind(printResult, 108));
+    base::AtExitManager::RegisterCallback(std::bind(printResult, 109));
+
+    return 0;
+}
+```
+
+最后运行结果:
+```
+[24643:24643:0518/133342.891162:INFO:thread_test.cc(35)] -------sum-------105
+[24643:24643:0518/133342.891221:INFO:thread_test.cc(35)] -------sum-------104
+[24643:24643:0518/133342.891242:INFO:thread_test.cc(35)] -------sum-------103
+[24643:24643:0518/133342.891265:INFO:thread_test.cc(35)] -------sum-------109
+[24643:24643:0518/133342.891290:INFO:thread_test.cc(35)] -------sum-------108
+[24643:24643:0518/133342.891309:INFO:thread_test.cc(35)] -------sum-------107
+[24643:24643:0518/133342.891330:INFO:thread_test.cc(35)] -------sum-------102
+[24643:24643:0518/133342.891350:INFO:thread_test.cc(35)] -------sum-------101
+[24643:24643:0518/133342.891369:INFO:thread_test.cc(35)] -------sum-------100
+```
+
+### 接口
+函数或接口 | 说明 | 注意事项
+-- | -- | --
+RegisterCallback | 静态函数,注册退出时回调 | 调用顺序和注册顺序相反
+RunCallbacksNow | 静态函数,立即执行当前`AtExitManager`对象中注册的回调 |
 

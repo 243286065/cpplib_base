@@ -64,17 +64,33 @@ class BASE_EXPORT LogMessage {
   (logging::LogMessage(logging::LOG_##SEVERITY, __FILE__, __LINE__)).GetStream()
 
 #define CHECK(condition)                          \
-  if (!(condition)) {                               \
-    LOG(FATAL) << "Check failed : " #condition "."; \
-  }
+  if (!(condition)) (                              \
+    LOG(FATAL) << "Check failed : " #condition ". " \
+  )
 
 #if defined(DEBUG)
 #define DLOG(SEVERITY) LOG(SEVERITY)
 #define DCHECK(condition) CHECK(condition)
 #else
 #define DLOG(SEVERITY) std::ostringstream()
-#define DCHECK(condition)
+#define DCHECK(condition) std::ostringstream()
 #endif
+
+#define CHECK_EQ(val1, val2) CHECK((val1) == (val2))
+#define CHECK_NE(val1, val2) CHECK((val1) != (val2))
+#define CHECK_LE(val1, val2) CHECK((val1) <= (val2))
+#define CHECK_LT(val1, val2) CHECK((val1) < (val2))
+#define CHECK_GE(val1, val2) CHECK((val1) >= (val2))
+#define CHECK_GT(val1, val2) CHECK((val1) > (val2))
+
+#define DCHECK_EQ(val1, val2) DCHECK((val1) == (val2))
+#define DCHECK_NE(val1, val2) DCHECK((val1) != (val2))
+#define DCHECK_LE(val1, val2) DCHECK((val1) <= (val2))
+#define DCHECK_LT(val1, val2) DCHECK((val1) < (val2))
+#define DCHECK_GE(val1, val2) DCHECK((val1) >= (val2))
+#define DCHECK_GT(val1, val2) DCHECK((val1) > (val2))
+
+#define NOTREACHED() DCHECK(false)
 
 }  // namespace logging
 

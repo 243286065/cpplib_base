@@ -151,7 +151,7 @@ LogMessage::~LogMessage() {
   }
 
   if (severity_ == LOG_FATAL) {
-    abort();
+    exit(1);
   }
 }
 

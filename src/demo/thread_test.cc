@@ -1,6 +1,7 @@
 #include "base/thread/thread.h"
 #include "base/utils.h"
 #include "base/log/logging.h"
+#include "base/at_exit.h"
 
 #include <iostream>
 
@@ -34,7 +35,7 @@ void printResult(int sum) {
     LOG(INFO) << "-------sum-------" << sum;
 }
 
-void test() {
+void test_thread() {
     LOG(WARNING) << "------------------------------START------------------------------------------";
     base::Thread thread_ui;
 
@@ -73,11 +74,33 @@ void test() {
   DCHECK(true);
 }
 
+
+
+
+
 int main() {
-  logging::InitLogging("", logging::LOG_TO_BOTH_FILE_AND_SYSTEM_DEBUG_LOG, logging::APPEND_TO_OLD_LOG_FILE);
-  while(true) {
-      test();
+  base::AtExitManager exit_manager;
+
+  base::AtExitManager::RegisterCallback(std::bind(printResult, 100));
+  base::AtExitManager::RegisterCallback(std::bind(printResult, 101));
+  base::AtExitManager::RegisterCallback(std::bind(printResult, 102));
+
+  {
+      base::AtExitManager exit_manager_2;
+      base::AtExitManager::RegisterCallback(std::bind(printResult, 103));
+      base::AtExitManager::RegisterCallback(std::bind(printResult, 104));
+      base::AtExitManager::RegisterCallback(std::bind(printResult, 105));
   }
+
+  base::AtExitManager exit_manager_3;
+  base::AtExitManager::RegisterCallback(std::bind(printResult, 107));
+  base::AtExitManager::RegisterCallback(std::bind(printResult, 108));
+  base::AtExitManager::RegisterCallback(std::bind(printResult, 109));
+
+  // logging::InitLogging("", logging::LOG_TO_BOTH_FILE_AND_SYSTEM_DEBUG_LOG, logging::APPEND_TO_OLD_LOG_FILE);
+  // while(true) {
+  //     test_thread();
+  // }
   //   std::this_thread::sleep_for(std::chrono::seconds(10));
   return 0;
 }
