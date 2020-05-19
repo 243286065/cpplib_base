@@ -15,6 +15,7 @@ make
 先列着,慢慢来吧~~~  
 类或函数 | 文件 | 说明 | 完成情况
 -- | -- | -- | --
+TaskQueue | base/thread/task_queue.h | 任务队列 | 已完成
 MessageLoop | base/thread/message_loop.h | 消息循环队列 | 已完成
 Thread | base/thread/thread.h | 基于消息循环的线程 | 已完成
 LOG | base/log/logging.h | 日志 | 已完成
@@ -23,7 +24,7 @@ AtExitManager | base/at_exit.h | 注册退出函数   | 已完成
 Base64Encode/Base64Decode | base/encode/base64.h | base64加密和解密 | 已完成
 Md5Sum | base/encode/md5.h | md5散列 | 待开发
 Hash  | base/encode/hash.h | hash散列 | 待开发
-ThreadPool | base/thread/thread_pool | 基于消息循环线程的线程池 | 待开发
+ThreadPool | base/thread/thread_pool.h | 基于消息循环线程的线程池 | 完成
 ElapsedTimer | base/timer/elapsed_timer.h | 计时器 | 待开发
 Timer | base/timer/timer.h  | 定时器 | 待开发
 Json | base/json.h | Json库封装 | 待开发
@@ -38,6 +39,16 @@ Metrics | base/metrics.h | 封装数据统计接口 | 待开发
 
 
 # 常用类说明
+
+## TaskQueue
+任务队列,提供任务入队和出队操作,提供锁保护
+### 接口
+函数 | 说明 | 注意事项
+-- | --| --
+PushTask | 任务入队 | 自带锁保护
+PopTask | 任务出队 | 自带锁保护
+Empty | 任务队列是否为空 |
+
 ## MessageLoop
 消息循环队列,使用它可以将任何当前线程改造成消息循环线程.
 
@@ -55,7 +66,6 @@ loop.RunLoop();
 函数 | 说明 | 注意事项
 -- | --| --
 RunLoop | 调用之后,当前线程会进入循环,可以处理其他线程抛过来的任务 | 除非其他线程有调用它的`Stop()`函数, 它才能退出循环
-BindToCurrentThread | 作用是使在调用`RunLoop`之前就能接收其他线程抛出的任务,在调用`RunLoop`之后会处理这些任务 | 如果你不需要关心`RunLoop`之前是否有任务需要处理,那么你可以不用调用`BindToCurrentThread`接口
 PostTask | 抛任务,任务执行完不会回调 | 可在任意线程上调用
 PostTaskAndReply | 抛任务,带回调,抛出的任务执行完后,**回调函数会被抛回源线程执行** | 传递的回调函数不能传递参数,带参数版本的借口待开发
 
@@ -218,3 +228,38 @@ LOG(WARNING) << valid << "-----" << output;
 Base64Encode | base64加密函数 | 
 Base64Decode | base64解密函数 | 输出注意是string指针
 
+
+## ThreadPool
+简单的线程池,基于`base/thread/thread.h`,非阻塞. 注意在构造函数时就已经创建了线程,但是都还未运行,需要等到调用Start,才能开始接收任务.
+
+示例:
+```
+#include "base/thread/thread_pool.h"
+#include "base/log/logging.h"
+#include "base/utils.h"
+
+
+base::ThreadPool pool(10);
+pool.Start();
+
+auto timestamp = base::GetMillSecondsTimestamp();
+for(int i= 0 ; i< 10000; i++) {
+pool.PostTask([=]() {
+    LOG(WARNING) << "----------------------------" << i;
+    // std::this_thread::sleep_for(std::chrono::seconds(3));
+});
+}
+pool.Stop();
+LOG(WARNING) << "Use time: " << base::GetMillSecondsTimestamp() - timestamp << " ms";
+```
+
+### 接口
+函数或接口 | 说明 | 注意事项
+-- | -- | --
+Start | 开始运行线程池 | 只有调用Start后才会开始接收任务,且此操作为非阻塞操作
+Stop | 停止线程池 | 此接口需要得到已有任务完成才会完全退出.
+PostTask | 传递任务 |
+
+改进方向:  
+* 提供接收回调任务接口;
+* 提供延时任务接口.

@@ -66,6 +66,8 @@ set(
     ${PROJECT_SOURCE_DIR}/src/base/thread/task_queue.h
     ${PROJECT_SOURCE_DIR}/src/base/thread/thread.cc
     ${PROJECT_SOURCE_DIR}/src/base/thread/thread.h
+    ${PROJECT_SOURCE_DIR}/src/base/thread/thread_pool.cc
+    ${PROJECT_SOURCE_DIR}/src/base/thread/thread_pool.h
     ${PROJECT_SOURCE_DIR}/src/base/utils.cc
     ${PROJECT_SOURCE_DIR}/src/base/utils.h
 )

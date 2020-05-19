@@ -1,5 +1,6 @@
 #include "base/thread/thread.h"
 
+#include "base/log/logging.h"
 #include "base/thread/closure.h"
 #include "base/utils.h"
 
@@ -38,14 +39,11 @@ void Thread::Start() {
       cond_.wait(lock);
     }
   }
-
-  while (!message_loop_.IsRunning()) {
-    std::this_thread::sleep_for(std::chrono::microseconds(5));
-  }
 }
 
 void Thread::DoStart() {
-  message_loop_.RunLoopInternal([this](){
+  message_loop_ = std::make_shared<MessageLoop>();
+  message_loop_->RunLoopInternal([this]() {
     // Make sure messageloop has run
     std::lock_guard<std::mutex> lock(mutex_);
     is_stopped_ = false;
@@ -54,8 +52,8 @@ void Thread::DoStart() {
 }
 
 void Thread::Stop() {
-  if (!is_stopped_ && message_loop_.IsRunning()) {
-    message_loop_.Stop();
+  if (!is_stopped_ && message_loop_ && message_loop_->IsRunning()) {
+    message_loop_->Stop();
   }
 
   if (thread_ && thread_->joinable()) {
@@ -72,12 +70,20 @@ bool Thread::IsRunning() {
 }
 
 void Thread::PostTask(const OnceCallback& task) {
-  message_loop_.PostTask(task);
+  if (!message_loop_) {
+    NOTREACHED() << "Thread has not start work";
+    return;
+  }
+  message_loop_->PostTask(task);
 }
 
 void Thread::PostTaskAndReply(const OnceCallback& task,
                               const OnceCallback& callback) {
-  message_loop_.PostTaskAndReply(task, callback);
+  if (!message_loop_) {
+    NOTREACHED() << "Thread has not start work";
+    return;
+  }
+  message_loop_->PostTaskAndReply(task, callback);
 }
 
 }  // namespace base

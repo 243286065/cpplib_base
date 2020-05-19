@@ -10,7 +10,7 @@
 
 namespace base {
 
-class TaskQueue {
+class BASE_EXPORT TaskQueue {
  public:
   TaskQueue();
   ~TaskQueue();
@@ -25,6 +25,8 @@ class TaskQueue {
   std::mutex mutex_;
   std::queue<Closure> task_queue_;
   std::condition_variable cond_;
+
+  DISALLOW_COPY_AND_ASSIGN(TaskQueue);
 };
 
 }  // namespace base

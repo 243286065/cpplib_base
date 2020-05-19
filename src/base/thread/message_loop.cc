@@ -6,16 +6,19 @@
 
 namespace base {
 
-MessageLoop::MessageLoop() : is_stopped_(true) {}
+MessageLoop::MessageLoop() : is_stopped_(true), thread_id_(0) {
+  BindToCurrentThread();
+}
 
-MessageLoop::~MessageLoop() {}
+MessageLoop::~MessageLoop() {
+  UnBindToCurrentThread();
+}
 
 void MessageLoop::RunLoop() {
   RunLoopInternal(nullptr);
 }
 
 void MessageLoop::RunLoopInternal(std::function<void()> callback) {
-  BindToCurrentThread();
   is_stopped_ = false;
 
   if(callback) {
@@ -54,6 +57,10 @@ void MessageLoop::PostTaskAndReply(const OnceCallback& task,
 }
 
 void MessageLoop::BindToCurrentThread() {
+  if(thread_id_ != 0) {
+    UnBindToCurrentThread();
+  }
+
 	thread_id_ = GetTaskCurrentThreadId();
   MessageLoopManagerSingleton::GetInstance()->RegisterMessageLoop(this);
 }

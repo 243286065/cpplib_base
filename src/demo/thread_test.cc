@@ -1,4 +1,5 @@
 #include "base/thread/thread.h"
+#include "base/thread/thread_pool.h"
 #include "base/utils.h"
 #include "base/log/logging.h"
 #include "base/at_exit.h"
@@ -43,8 +44,6 @@ void test_thread() {
   base::Thread thread_io;
 
   base::MessageLoop loop;
-  //单独使用MessageLoop,由于RunLoop会进入循环,因此如果想在RunLoop之间执行一些操作的同时,还要防止遗漏其他线程抛过来的任务,请尽早使用BindToCurrentThread.
-  loop.BindToCurrentThread();
 
   thread_io.Start();
   thread_ui.Start();
@@ -106,15 +105,34 @@ void test_base64() {
   LOG(WARNING) << valid << "-----" << output;
 }
 
+void test_threadpool() {
+  base::ThreadPool pool(10);
+  pool.Start();
+
+  int i = 0;
+
+  auto timestamp = base::GetMillSecondsTimestamp();
+  for(int i= 0 ; i< 10000; i++) {
+    pool.PostTask([=]() {
+      LOG(WARNING) << "----------------------------" << i;
+      // std::this_thread::sleep_for(std::chrono::seconds(3));
+    });
+  }
+  pool.Stop();
+  LOG(WARNING) << "Use time: " << base::GetMillSecondsTimestamp() - timestamp << " ms";
+}
+
 
 int main() {
 
 
-  // logging::InitLogging("", logging::LOG_TO_BOTH_FILE_AND_SYSTEM_DEBUG_LOG, logging::APPEND_TO_OLD_LOG_FILE);
+  logging::InitLogging("", logging::LOG_ONLY_TO_SYSTEM_DEBUG_LOG, logging::APPEND_TO_OLD_LOG_FILE);
   // while(true) {
   //     test_thread();
   // }
   //   std::this_thread::sleep_for(std::chrono::seconds(10));
-  test_base64();
+  //test_base64();
+
+  test_threadpool();
   return 0;
 }

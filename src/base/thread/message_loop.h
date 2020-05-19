@@ -31,15 +31,15 @@ class BASE_EXPORT MessageLoop {
 
   bool IsRunning() { return !is_stopped_; }
 
+ private:
+  void RunLoopInternal(std::function<void()> callback);
+
   // When using MessageLoop alone, because RunLoop will enter the loop, if you
   // want to perform some operations before RunLoop and you
   // want to avoid missing tasks thrown by other threads, please use
   // BindToCurrentThread as early as possible
   void BindToCurrentThread();
   void UnBindToCurrentThread();
-
- private:
-  void RunLoopInternal(std::function<void()> callback);
 
   std::atomic<uint64_t> thread_id_;
   std::atomic_bool is_stopped_;

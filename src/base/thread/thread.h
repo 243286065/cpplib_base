@@ -38,7 +38,7 @@ class BASE_EXPORT Thread {
   std::string name_;
   std::unique_ptr<std::thread> thread_;
 
-  MessageLoop message_loop_;
+  std::shared_ptr<MessageLoop> message_loop_ = nullptr;
   std::condition_variable cond_;
   std::mutex mutex_;
 

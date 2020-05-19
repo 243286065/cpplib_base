@@ -10,10 +10,7 @@ void TaskQueue::PushTask(const Closure& task) {
   std::lock_guard<std::mutex> lock(mutex_);
   task_queue_.push(task);
 
-  if (task_queue_.size() == 1) {
-    // notify
-    cond_.notify_one();
-  }
+  cond_.notify_one();
 }
 
 const Closure TaskQueue::PopTask() {
