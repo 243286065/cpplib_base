@@ -42,6 +42,8 @@ set(
     ${PROJECT_SOURCE_DIR}/src/base/third_party/modp_b64/modp_b64_data.h
     ${PROJECT_SOURCE_DIR}/src/base/third_party/modp_b64/modp_b64.cc
     ${PROJECT_SOURCE_DIR}/src/base/third_party/modp_b64/modp_b64.h
+    ${PROJECT_SOURCE_DIR}/src/base/third_party/md5/md5.cc
+    ${PROJECT_SOURCE_DIR}/src/base/third_party/md5/md5.h
 )
 
 set(
@@ -76,6 +78,8 @@ set(
     ${PROJECT_SOURCE_DIR}/src/base/thread/thread.h
     ${PROJECT_SOURCE_DIR}/src/base/utils.cc
     ${PROJECT_SOURCE_DIR}/src/base/utils.h
+    ${PROJECT_SOURCE_DIR}/src/base/hash/md5.cc
+    ${PROJECT_SOURCE_DIR}/src/base/hash/md5.h
 )
 include_directories(${PROJECT_SOURCE_DIR}/src)
 

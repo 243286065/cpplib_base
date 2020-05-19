@@ -5,6 +5,7 @@
 #include "base/at_exit.h"
 #include "base/encode/base64.h"
 #include "base/hash/hash.h"
+#include "base/hash/md5.h"
 
 #include <iostream>
 
@@ -129,6 +130,7 @@ void test_hash() {
   LOG(WARNING) << "--------------" << std::hex << base::Hash(test) << "---" << base::Hash64(test) << "----" << base::Hash128(test).first << base::Hash128(test).second;
   std::wstring test1 = L"1232423中国1231312";
   LOG(WARNING) << "-----2---------" << std::hex << base::Hash(test1) << "---" <<base::Hash64(test1) << "----" << base::Hash128(test1).first << base::Hash128(test1).second;;
+  LOG(WARNING) << "-----md5------" << base::FastMD5(test);
 }
 
 

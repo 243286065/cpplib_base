@@ -32,4 +32,12 @@ bool Base64Decode(const std::string& input, std::string* output) {
   return true;
 }
 
+size_t Base64EncodeLength(const std::string& input) {
+  return modp_b64_encode_len(input.size()) + 10;
+}
+
+size_t Base64DecodeLength(const std::string& input) {
+  return modp_b64_decode_len(input.size() + 10);
+}
+
 }  // namespace base
