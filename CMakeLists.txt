@@ -37,6 +37,8 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_OUTPUT_DIR}/lib)
 
 set(
     DepSrc
+    ${PROJECT_SOURCE_DIR}/src/base/third_party/cityhash/city.cc
+    ${PROJECT_SOURCE_DIR}/src/base/third_party/cityhash/city.h
     ${PROJECT_SOURCE_DIR}/src/base/third_party/modp_b64/modp_b64_data.h
     ${PROJECT_SOURCE_DIR}/src/base/third_party/modp_b64/modp_b64.cc
     ${PROJECT_SOURCE_DIR}/src/base/third_party/modp_b64/modp_b64.h
@@ -52,10 +54,14 @@ set(
     ${PROJECT_SOURCE_DIR}/src/base/encode/base64.h
     ${PROJECT_SOURCE_DIR}/src/base/file/file_utils.cc
     ${PROJECT_SOURCE_DIR}/src/base/file/file_utils.h
+    ${PROJECT_SOURCE_DIR}/src/base/hash/hash.cc
+    ${PROJECT_SOURCE_DIR}/src/base/hash/hash.h
     ${PROJECT_SOURCE_DIR}/src/base/log/logging.cc
     ${PROJECT_SOURCE_DIR}/src/base/log/logging.h
     ${PROJECT_SOURCE_DIR}/src/base/macros.h
     ${PROJECT_SOURCE_DIR}/src/base/singleton.h
+    ${PROJECT_SOURCE_DIR}/src/base/string/string_convert.cc
+    ${PROJECT_SOURCE_DIR}/src/base/string/string_convert.h
     ${PROJECT_SOURCE_DIR}/src/base/thread/closure.cc
     ${PROJECT_SOURCE_DIR}/src/base/thread/closure.h
     ${PROJECT_SOURCE_DIR}/src/base/thread/message_loop_manager.cc
@@ -64,10 +70,10 @@ set(
     ${PROJECT_SOURCE_DIR}/src/base/thread/message_loop.h
     ${PROJECT_SOURCE_DIR}/src/base/thread/task_queue.cc
     ${PROJECT_SOURCE_DIR}/src/base/thread/task_queue.h
-    ${PROJECT_SOURCE_DIR}/src/base/thread/thread.cc
-    ${PROJECT_SOURCE_DIR}/src/base/thread/thread.h
     ${PROJECT_SOURCE_DIR}/src/base/thread/thread_pool.cc
     ${PROJECT_SOURCE_DIR}/src/base/thread/thread_pool.h
+    ${PROJECT_SOURCE_DIR}/src/base/thread/thread.cc
+    ${PROJECT_SOURCE_DIR}/src/base/thread/thread.h
     ${PROJECT_SOURCE_DIR}/src/base/utils.cc
     ${PROJECT_SOURCE_DIR}/src/base/utils.h
 )

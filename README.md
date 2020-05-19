@@ -23,8 +23,8 @@ Singleton | base/singleton.h | 单例模板类 | 已完成
 AtExitManager | base/at_exit.h | 注册退出函数   | 已完成
 Base64Encode/Base64Decode | base/encode/base64.h | base64加密和解密 | 已完成
 Md5Sum | base/encode/md5.h | md5散列 | 待开发
-Hash  | base/encode/hash.h | hash散列 | 待开发
-ThreadPool | base/thread/thread_pool.h | 基于消息循环线程的线程池 | 完成
+Hash  | base/hash/hash.h | hash散列 | 完成
+ThreadPool | base/thread/thread_pool.h | 基于消息循环线程的线程池 | 已完成
 ElapsedTimer | base/timer/elapsed_timer.h | 计时器 | 待开发
 Timer | base/timer/timer.h  | 定时器 | 待开发
 Json | base/json.h | Json库封装 | 待开发
@@ -263,3 +263,31 @@ PostTask | 传递任务 |
 改进方向:  
 * 提供接收回调任务接口;
 * 提供延时任务接口.
+
+## Hash
+简单的Hash散列计算函数. 基于cityhash项目.
+
+示例:
+```
+#include "base/log/logging.h"
+#include "base/hash/hash.h"
+
+std::string test = "1232423中国1231312";
+LOG(WARNING) << "--------------" << std::hex << base::Hash(test) << "---" << base::Hash64(test) << "----" << base::Hash128(test).first << base::Hash128(test).second;
+std::wstring test1 = L"1232423中国1231312";
+LOG(WARNING) << "-----2---------" << std::hex << base::Hash(test1) << "---" <<base::Hash64(test1) << "----" << base::Hash128(test1).first << base::Hash128(test1).second;;
+```
+运行结果:
+```
+[22424:22424:0519/154824.598722:WARNING:thread_test.cc(129)] --------------948f8e9c---c3ac8f11bcf5bfd9----7e9ce8a954094c9b1a6ac0c513b6bf4f
+[22424:22424:0519/154824.598737:WARNING:thread_test.cc(131)] -----2---------948f8e9c---c3ac8f11bcf5bfd9----7e9ce8a954094c9b1a6ac0c513b6bf4f
+```
+
+宽字符串也是先转换成char再进行计算hash值的.
+
+### 接口
+函数或接口 | 说明 | 注意事项
+-- | -- | --
+Hash | 得到32位整数值结果的hash | 注意存放结果的buff需要自己分配足够内存
+Hash64 | 得到64位整数的hash | 注意存放结果的buff需要自己分配足够内存
+Hash128 | 得到128位整数的hash | 结果以一个pair<64,64>保存; 注意存放结果的buff需要自己分配足够内存
