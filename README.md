@@ -25,7 +25,7 @@ Base64Encode/Base64Decode | base/encode/base64.h | base64加密和解密 | 已�
 Md5 | base/encode/md5.h | md5散列 | 已完成
 Hash  | base/hash/hash.h | hash散列 | 已完成
 ThreadPool | base/thread/thread_pool.h | 基于消息循环线程的线程池 | 已完成
-ElapsedTimer | base/timer/elapsed_timer.h | 计时器 | 待开发
+ElapsedTimer | base/timer/elapsed_timer.h | 计时器 | 完成
 Timer | base/timer/timer.h  | 定时器 | 待开发
 Json | base/json.h | Json库封装 | 待开发
 File | base/file/file.h | 文件跨平台封装 | 待开发
@@ -295,3 +295,25 @@ Hash64 | 得到64位整数的hash | 注意存放结果的buff需要自己分配�
 Hash128 | 得到128位整数的hash | 结果以一个pair<64,64>保存; 注意存放结果的buff需要自己分配足够内存
 FastMD5 | md5计算 | 
 
+### ElapsedTimer
+一个简单的计时器. **创建时就开始计时**.
+
+示例:
+```C++
+#include "base/timer/elapsed_timer.h"
+
+
+base::ElapsedTimer timer;
+......
+
+base::TimeDelta delta = timer.Elapsed();
+LOG(WARNING) << delta.InMicroseconds();
+LOG(WARNING) << timer.Begin() << "----" << timer.Elapsed();
+
+```
+
+### 接口
+函数或接口 | 说明 | 注意事项
+-- | -- | --
+Elapsed | 获取到目前位置时间长度 | 返回`base::TimeDelta`对象
+Begin | 返回开始计时的时间戳(微秒) |

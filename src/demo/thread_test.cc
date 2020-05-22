@@ -6,6 +6,7 @@
 #include "base/encode/base64.h"
 #include "base/hash/hash.h"
 #include "base/hash/md5.h"
+#include "base/timer/elapsed_timer.h"
 
 #include <iostream>
 
@@ -133,6 +134,13 @@ void test_hash() {
   LOG(WARNING) << "-----md5------" << base::FastMD5(test);
 }
 
+void test_timer() {
+  base::ElapsedTimer timer;
+  test_threadpool();
+  base::TimeDelta delta = timer.Elapsed();
+  LOG(WARNING) << delta.InMicroseconds();
+  LOG(WARNING) << timer.Begin() << "----" << timer.Elapsed();
+}
 
 
 int main() {
@@ -145,7 +153,9 @@ int main() {
   //   std::this_thread::sleep_for(std::chrono::seconds(10));
   //test_base64();
 
-  test_threadpool();
-  test_hash();
+  //test_threadpool();
+  //test_hash();
+
+  test_timer();
   return 0;
 }

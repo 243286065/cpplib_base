@@ -9,7 +9,7 @@ add_definitions(-DOS_ARCH=${CMAKE_SYSTEM_NAME})
 
 IF (CMAKE_BUILD_TYPE STREQUAL Debug)
     add_definitions(-DDEBUG)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -pthread")
     message(STATUS "Compile Debug")
 ELSE()
     add_definitions(-DRELEASE)
@@ -80,6 +80,10 @@ set(
     ${PROJECT_SOURCE_DIR}/src/base/utils.h
     ${PROJECT_SOURCE_DIR}/src/base/hash/md5.cc
     ${PROJECT_SOURCE_DIR}/src/base/hash/md5.h
+    ${PROJECT_SOURCE_DIR}/src/base/time/time.cc
+    ${PROJECT_SOURCE_DIR}/src/base/time/time.h
+    ${PROJECT_SOURCE_DIR}/src/base/timer/elapsed_timer.cc
+    ${PROJECT_SOURCE_DIR}/src/base/timer/elapsed_timer.h
 )
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
