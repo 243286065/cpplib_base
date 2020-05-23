@@ -13,6 +13,7 @@
 #include "base/macros.h"
 #include "base/thread/message_loop.h"
 #include "base/thread/task_queue.h"
+#include "base/time/time.h"
 
 namespace base {
 
@@ -27,10 +28,13 @@ class BASE_EXPORT Thread {
 
   void Start();
   void Stop();
+  void StopSoon();
 	bool IsRunning();
 
   void PostTask(const OnceCallback& task);
   void PostTaskAndReply(const OnceCallback& task, const OnceCallback& callback);
+  void PostDelayTask(const TimeDelta& delay, const OnceCallback& task);
+  void PostDelayTaskAndReply(const TimeDelta& delay, const OnceCallback& task, const OnceCallback& callback);
 
  private:
   void DoStart();

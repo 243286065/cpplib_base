@@ -65,6 +65,20 @@ void Thread::Stop() {
   thread_.reset(nullptr);
 }
 
+void Thread::StopSoon() {
+  if (!is_stopped_ && message_loop_ && message_loop_->IsRunning()) {
+    message_loop_->StopSoon();
+  }
+
+  if (thread_ && thread_->joinable()) {
+    thread_->join();
+  }
+
+  is_stopped_ = true;
+
+  thread_.reset(nullptr);
+}
+
 bool Thread::IsRunning() {
   return !is_stopped_;
 }
@@ -85,5 +99,24 @@ void Thread::PostTaskAndReply(const OnceCallback& task,
   }
   message_loop_->PostTaskAndReply(task, callback);
 }
+
+void Thread::PostDelayTask(const TimeDelta& delay, const OnceCallback& task) {
+  if (!message_loop_) {
+    NOTREACHED() << "Thread has not start work";
+    return;
+  }
+
+  message_loop_->PostDelayTask(delay, task);
+}
+
+void Thread::PostDelayTaskAndReply(const TimeDelta& delay, const OnceCallback& task, const OnceCallback& callback) {
+  if (!message_loop_) {
+    NOTREACHED() << "Thread has not start work";
+    return;
+  }
+
+  message_loop_->PostDelayTaskAndReply(delay, task, callback);
+}
+
 
 }  // namespace base

@@ -21,9 +21,22 @@ class BASE_EXPORT TaskQueue {
 
   bool Empty();
 
+  void Clear();
+
  private:
+  struct ClouserCompare {
+    bool operator()(const Closure& a, const Closure& b) {
+      return a.timestamp_active_ > b.timestamp_active_;
+    }
+  };
+
+  static bool CompareClouser(const Closure& task_a, const Closure& task_b);
   std::mutex mutex_;
-  std::queue<Closure> task_queue_;
+  
+  //minimum_heap
+  std::priority_queue<Closure, std::vector<Closure>, TaskQueue::ClouserCompare>
+      task_queue_;
+
   std::condition_variable cond_;
 
   DISALLOW_COPY_AND_ASSIGN(TaskQueue);

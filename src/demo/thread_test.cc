@@ -7,6 +7,8 @@
 #include "base/hash/hash.h"
 #include "base/hash/md5.h"
 #include "base/timer/elapsed_timer.h"
+#include "base/time/time.h"
+#include "base/timer/delay_timer.h"
 
 #include <iostream>
 
@@ -142,6 +144,40 @@ void test_timer() {
   LOG(WARNING) << timer.Begin() << "----" << timer.Elapsed();
 }
 
+void print_timestap(int index) {
+  LOG(WARNING) << index << "---------" << base::Now();
+}
+
+void test_delay_timer() {
+  base::MessageLoop loop;
+  print_timestap(0);
+
+  base::Thread io;
+  io.Start();
+  io.PostDelayTask(base::TimeDelta::FromSeconds(3), std::bind(print_timestap, 1));
+  io.PostDelayTask(base::TimeDelta::FromSeconds(1), std::bind(print_timestap, 2));
+  io.PostTask(std::bind(print_timestap, 3));
+  io.PostTask(std::bind(print_timestap, 4));
+  io.PostTask(std::bind(print_timestap, 5));
+
+  io.PostTaskAndReply(nullptr, std::bind(print_timestap, 6));
+
+  base::DelayTimer delay_timer(base::TimeDelta::FromSeconds(5));
+  delay_timer.SyncBlockWait(std::bind(print_timestap, 6));
+  print_timestap(7);
+  delay_timer.SyncNoBlockWait(std::bind(print_timestap, 8));
+
+  delay_timer.AsyncWait(std::bind(print_timestap, 9));
+  delay_timer.AsyncWait(std::bind(print_timestap, 10));
+  delay_timer.Cancle();
+  print_timestap(11);
+
+  base::DelayTimer delay_timer2(base::TimeDelta::FromSeconds(3));
+  delay_timer2.AsyncWait(std::bind(print_timestap, 12));
+
+  loop.RunLoop();
+}
+
 
 int main() {
 
@@ -156,6 +192,7 @@ int main() {
   //test_threadpool();
   //test_hash();
 
-  test_timer();
+  // test_timer();
+  test_delay_timer();
   return 0;
 }
