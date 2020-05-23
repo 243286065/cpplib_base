@@ -5,6 +5,8 @@ C++公用基础库,仿照chromium-base,提供一些基本的功能实现,可以�
 
 # 编译说明
 ```
+git submodule update --init --recursive
+
 mkdir build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=Debug/Release
@@ -48,6 +50,7 @@ Metrics | base/metrics.h | 封装数据统计接口 | 待开发
 PushTask | 任务入队 | 自带锁保护
 PopTask | 任务出队 | 自带锁保护
 Empty | 任务队列是否为空 |
+Clear | 清空队列 | 自带锁保护
 
 ## MessageLoop
 消息循环队列,使用它可以将任何当前线程改造成消息循环线程.
