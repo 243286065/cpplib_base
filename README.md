@@ -25,8 +25,8 @@ Base64Encode/Base64Decode | base/encode/base64.h | base64加密和解密 | 已�
 Md5 | base/encode/md5.h | md5散列 | 已完成
 Hash  | base/hash/hash.h | hash散列 | 已完成
 ThreadPool | base/thread/thread_pool.h | 基于消息循环线程的线程池 | 已完成
-ElapsedTimer | base/timer/elapsed_timer.h | 计时器 | 完成
-Timer | base/timer/timer.h  | 定时器 | 待开发
+ElapsedTimer | base/timer/elapsed_timer.h | 计时器 | 已完成
+DelayTimer | base/timer/delay_timer.h  | 定时器 | 已完成
 Json | base/json.h | Json库封装 | 待开发
 File | base/file/file.h | 文件跨平台封装 | 待开发
 IPCHandler | base/ipc/ipc_handler.h | 封装跨平台进程间通信 | 待开发
@@ -68,6 +68,9 @@ loop.RunLoop();
 RunLoop | 调用之后,当前线程会进入循环,可以处理其他线程抛过来的任务 | 除非其他线程有调用它的`Stop()`函数, 它才能退出循环
 PostTask | 抛任务,任务执行完不会回调 | 可在任意线程上调用
 PostTaskAndReply | 抛任务,带回调,抛出的任务执行完后,**回调函数会被抛回源线程执行** | 传递的回调函数不能传递参数,带参数版本的借口待开发
+PostDelayTask/PostDelayTaskAndReply | 延时执行任务的版本 | 
+Stop | 任务都执行完后,停止消息循环 | 调用后就不会再接收新的任务
+StopSoon | 清空任务队列,立即停止消息循环 | 
 
 ### 优化方向
 * 提供可传递参数的PostTask回调: `PostTaskAndReplyWithResult`;
@@ -91,6 +94,9 @@ thread_io.PostTaskAndReply(...);
 SetName/GetName | 给线程取名 |
 Start/Stop  | 启动/停止线程 | Start保证任务队列启动成功
 PostTask/PostTaskAndReply | 抛任务 | 对MessageLoop借口的封装
+PostDelayTask/PostDelayTaskAndReply | 延时执行的任务 | 对MessageLoop借口的封装
+Stop | 执行完任务后,关闭线程|
+StopSoon | 清空尚未执行的任务,关闭线程
 
 ## LOG
 简单的日志系统,可选择打印到控制台或者写入到日志文件中.
@@ -295,7 +301,7 @@ Hash64 | 得到64位整数的hash | 注意存放结果的buff需要自己分配�
 Hash128 | 得到128位整数的hash | 结果以一个pair<64,64>保存; 注意存放结果的buff需要自己分配足够内存
 FastMD5 | md5计算 | 
 
-### ElapsedTimer
+## ElapsedTimer
 一个简单的计时器. **创建时就开始计时**.
 
 示例:
@@ -317,3 +323,70 @@ LOG(WARNING) << timer.Begin() << "----" << timer.Elapsed();
 -- | -- | --
 Elapsed | 获取到目前位置时间长度 | 返回`base::TimeDelta`对象
 Begin | 返回开始计时的时间戳(微秒) |
+
+## DelayTimer
+延时定时器,可以触发任务. 非阻塞操作依赖`base::Thread`实现.
+
+示例:
+```
+#include "base/time/time.h"
+#include "base/timer/delay_timer.h"
+#include "base/thread/thread.h"
+
+void print_timestap(int index) {
+  LOG(WARNING) << index << "---------" << base::Now();
+}
+
+base::MessageLoop loop;
+  print_timestap(0);
+
+base::Thread io;
+io.Start();
+io.PostDelayTask(base::TimeDelta::FromSeconds(3), std::bind(print_timestap, 1));
+io.PostDelayTask(base::TimeDelta::FromSeconds(1), std::bind(print_timestap, 2));
+io.PostTask(std::bind(print_timestap, 3));
+io.PostTask(std::bind(print_timestap, 4));
+io.PostTask(std::bind(print_timestap, 5));
+
+io.PostTaskAndReply(nullptr, std::bind(print_timestap, 6));
+
+base::DelayTimer delay_timer(base::TimeDelta::FromSeconds(5));
+delay_timer.SyncBlockWait(std::bind(print_timestap, 6));
+print_timestap(7);
+delay_timer.SyncNoBlockWait(std::bind(print_timestap, 8));
+
+delay_timer.AsyncWait(std::bind(print_timestap, 9));
+delay_timer.AsyncWait(std::bind(print_timestap, 10));
+delay_timer.Cancle();
+print_timestap(11);
+
+base::DelayTimer delay_timer2(base::TimeDelta::FromSeconds(3));
+delay_timer2.AsyncWait(std::bind(print_timestap, 12));
+
+loop.RunLoop();
+```
+
+输出:
+```
+[12847:12847:0523/105000.088835:WARNING:thread_test.cc(148)] 0---------1590202200088869
+[12847:12848:0523/105000.089256:WARNING:thread_test.cc(148)] 3---------1590202200089288
+[12847:12848:0523/105000.089332:WARNING:thread_test.cc(148)] 4---------1590202200089342
+[12847:12848:0523/105000.089370:WARNING:thread_test.cc(148)] 5---------1590202200089377
+[12847:12848:0523/105001.089233:WARNING:thread_test.cc(148)] 2---------1590202201089240
+[12847:12848:0523/105003.089212:WARNING:thread_test.cc(148)] 1---------1590202203089219
+[12847:12847:0523/105005.089382:WARNING:thread_test.cc(148)] 6---------1590202205089403
+[12847:12847:0523/105005.089440:WARNING:thread_test.cc(148)] 7---------1590202205089446
+[12847:12847:0523/105005.090000:WARNING:thread_test.cc(148)] 11---------1590202205090015
+[12847:12847:0523/105005.090305:WARNING:thread_test.cc(148)] 6---------1590202205090323
+[12847:12851:0523/105008.090304:WARNING:thread_test.cc(148)] 12---------1590202208090313
+```
+
+### 接口
+函数或接口 | 说明 | 注意事项
+-- | -- | --
+SyncBlockWait | 同步阻塞等待,即需要定时器超时才能继续执行 | 不依赖MessageLoop;调用它定时器才会计时
+SyncNoBlockWait | 同步非阻塞等待,即定时器超时后回调到源线程执行 | 依赖MessageLoop, 即原线程需要是消息循环线程,且不会被长期阻塞在某个任务上
+AsyncWait | 异步等待,定时器超时后任务会在其他线程上执行 | 原线程不依赖于MessageLoop
+Cancle | 取消定时器 | 会立刻取消所有还未触发的任务
+
+> 注意:本定时器,一个定时器可以多次wait,每次都是重新开始计时.

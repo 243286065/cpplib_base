@@ -10,6 +10,7 @@
 #include "base/callback.h"
 #include "base/macros.h"
 #include "base/thread/task_queue.h"
+#include "base/time/time.h"
 
 namespace base {
 
@@ -25,9 +26,12 @@ class BASE_EXPORT MessageLoop {
 
   // Can be called on any thread
   void Stop();
+  void StopSoon();
 
   void PostTask(const OnceCallback& task);
   void PostTaskAndReply(const OnceCallback& task, const OnceCallback& callback);
+  void PostDelayTask(const TimeDelta& delay, const OnceCallback& task);
+  void PostDelayTaskAndReply(const TimeDelta& delay, const OnceCallback& task, const OnceCallback& callback);
 
   bool IsRunning() { return !is_stopped_; }
 
@@ -43,6 +47,7 @@ class BASE_EXPORT MessageLoop {
 
   std::atomic<uint64_t> thread_id_;
   std::atomic_bool is_stopped_;
+  std::atomic_bool stopped_soon_;
   TaskQueue task_queue_;
 
   friend Thread;

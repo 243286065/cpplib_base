@@ -6,7 +6,7 @@
 
 namespace base {
 
-MessageLoop::MessageLoop() : is_stopped_(true), thread_id_(0) {
+MessageLoop::MessageLoop() : is_stopped_(true), stopped_soon_(false), thread_id_(0) {
   BindToCurrentThread();
 }
 
@@ -19,7 +19,9 @@ void MessageLoop::RunLoop() {
 }
 
 void MessageLoop::RunLoopInternal(std::function<void()> callback) {
+  BindToCurrentThread();
   is_stopped_ = false;
+  stopped_soon_ = false;
 
   if(callback) {
     callback();
@@ -27,6 +29,12 @@ void MessageLoop::RunLoopInternal(std::function<void()> callback) {
 
   // Run Loop
   while (true) {
+    if(stopped_soon_) {
+      task_queue_.Clear();
+      is_stopped_ = true;
+      return;
+    }
+  
     if (is_stopped_ && task_queue_.Empty()) {
       return;
     }
@@ -45,6 +53,15 @@ void MessageLoop::Stop() {
   }
 }
 
+void MessageLoop::StopSoon() {
+  if (!stopped_soon_) {
+    PostTask([this]() {
+      stopped_soon_ = true;
+      UnBindToCurrentThread();
+    });
+  }
+}
+
 void MessageLoop::PostTask(const OnceCallback& task) {
   Closure closure(task, nullptr);
   task_queue_.PushTask(closure);
@@ -53,6 +70,16 @@ void MessageLoop::PostTask(const OnceCallback& task) {
 void MessageLoop::PostTaskAndReply(const OnceCallback& task,
                                    const OnceCallback& callback) {
   Closure closure(task, callback);
+  task_queue_.PushTask(closure);
+}
+
+void MessageLoop::PostDelayTask(const TimeDelta& delay, const OnceCallback& task) {
+  Closure closure(delay, task, nullptr);
+  task_queue_.PushTask(closure);
+}
+
+void MessageLoop::PostDelayTaskAndReply(const TimeDelta& delay, const OnceCallback& task, const OnceCallback& callback) {
+  Closure closure(delay, task, callback);
   task_queue_.PushTask(closure);
 }
 

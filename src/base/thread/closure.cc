@@ -2,13 +2,22 @@
 
 #include <utility>
 
-#include "base/thread/message_loop_manager.h"
 #include "base/thread/message_loop.h"
+#include "base/thread/message_loop_manager.h"
 #include "base/utils.h"
 
 namespace base {
 Closure::Closure(const OnceCallback& task, const OnceCallback& callback)
     : from_thread_id_(GetTaskCurrentThreadId()),
+      timestamp_active_(Now()),
+      task_(std::move(task)),
+      callback_(std::move(callback)) {}
+
+Closure::Closure(const TimeDelta& delay,
+                 const OnceCallback& task,
+                 const OnceCallback& callback)
+    : from_thread_id_(GetTaskCurrentThreadId()),
+      timestamp_active_(Now() + delay.InMicroseconds()),
       task_(std::move(task)),
       callback_(std::move(callback)) {}
 

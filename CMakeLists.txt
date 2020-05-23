@@ -58,6 +58,8 @@ set(
     ${PROJECT_SOURCE_DIR}/src/base/file/file_utils.h
     ${PROJECT_SOURCE_DIR}/src/base/hash/hash.cc
     ${PROJECT_SOURCE_DIR}/src/base/hash/hash.h
+    ${PROJECT_SOURCE_DIR}/src/base/hash/md5.cc
+    ${PROJECT_SOURCE_DIR}/src/base/hash/md5.h
     ${PROJECT_SOURCE_DIR}/src/base/log/logging.cc
     ${PROJECT_SOURCE_DIR}/src/base/log/logging.h
     ${PROJECT_SOURCE_DIR}/src/base/macros.h
@@ -76,14 +78,14 @@ set(
     ${PROJECT_SOURCE_DIR}/src/base/thread/thread_pool.h
     ${PROJECT_SOURCE_DIR}/src/base/thread/thread.cc
     ${PROJECT_SOURCE_DIR}/src/base/thread/thread.h
-    ${PROJECT_SOURCE_DIR}/src/base/utils.cc
-    ${PROJECT_SOURCE_DIR}/src/base/utils.h
-    ${PROJECT_SOURCE_DIR}/src/base/hash/md5.cc
-    ${PROJECT_SOURCE_DIR}/src/base/hash/md5.h
     ${PROJECT_SOURCE_DIR}/src/base/time/time.cc
     ${PROJECT_SOURCE_DIR}/src/base/time/time.h
+    ${PROJECT_SOURCE_DIR}/src/base/timer/delay_timer.cc
+    ${PROJECT_SOURCE_DIR}/src/base/timer/delay_timer.h
     ${PROJECT_SOURCE_DIR}/src/base/timer/elapsed_timer.cc
     ${PROJECT_SOURCE_DIR}/src/base/timer/elapsed_timer.h
+    ${PROJECT_SOURCE_DIR}/src/base/utils.cc
+    ${PROJECT_SOURCE_DIR}/src/base/utils.h
 )
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
