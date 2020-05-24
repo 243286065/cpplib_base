@@ -9,6 +9,7 @@
 #include "base/timer/elapsed_timer.h"
 #include "base/time/time.h"
 #include "base/timer/delay_timer.h"
+#include "base/json/json.h"
 
 #include <iostream>
 
@@ -178,6 +179,17 @@ void test_delay_timer() {
   loop.RunLoop();
 }
 
+void test_json() {
+	base::Json json("{\"1\":\"123\"}");
+	LOG(WARNING) << json.Str();
+
+	json.AddMember("2", "1234");
+	json.AddMember("2", 12);
+
+	std::string value = "123";
+	json.AddMember("2", value);
+	LOG(WARNING) << json.Str();
+}
 
 int main() {
 
@@ -193,6 +205,7 @@ int main() {
   //test_hash();
 
   // test_timer();
-  test_delay_timer();
+  //test_delay_timer();
+  test_json();
   return 0;
 }

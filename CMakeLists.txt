@@ -86,6 +86,8 @@ set(
     ${PROJECT_SOURCE_DIR}/src/base/timer/elapsed_timer.h
     ${PROJECT_SOURCE_DIR}/src/base/utils.cc
     ${PROJECT_SOURCE_DIR}/src/base/utils.h
+    ${PROJECT_SOURCE_DIR}/src/base/json/json.cc
+    ${PROJECT_SOURCE_DIR}/src/base/json/json.h
 )
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
