@@ -25,24 +25,24 @@ const int64_t kNanosecondsPerSecond =
     kNanosecondsPerMicrosecond * kMicrosecondsPerSecond;
 
 int64_t SaturatedAdd(int64_t value, TimeDelta delta) {
-  // int64_t result = 0;
-  // if (delta.is_max()) {
-  //   CHECK_GT(value, std::numeric_limits<int64_t>::min());
-  //   result = std::numeric_limits<int64_t>::max();
-  // } else if (delta.is_min()) {
-  //   CHECK_LT(value, std::numeric_limits<int64_t>::max());
-  //   result = std::numeric_limits<int64_t>::min();
-  // } else {
-  //   if (value > 0 && delta.delta_ > 0 &&
-  //       std::numeric_limits<int64_t>::max() - value < delta.delta_) {
-  //     result = std::numeric_limits<int64_t>::max();
-  //   } else if (value < 0 && delta.delta_ < 0 &&
-  //              std::numeric_limits<int64_t>::min() - value > delta.delta_) {
-  //     result = std::numeric_limits<int64_t>::min();
-  //   } else {
-  //     result = value + delta.delta_;
-  //   }
-  // }
+  int64_t result = 0;
+  if (delta.is_max()) {
+    CHECK_GT(value, std::numeric_limits<int64_t>::min());
+    result = std::numeric_limits<int64_t>::max();
+  } else if (delta.is_min()) {
+    CHECK_LT(value, std::numeric_limits<int64_t>::max());
+    result = std::numeric_limits<int64_t>::min();
+  } else {
+    if (value > 0 && delta.delta_ > 0 &&
+        std::numeric_limits<int64_t>::max() - value < delta.delta_) {
+      result = std::numeric_limits<int64_t>::max();
+    } else if (value < 0 && delta.delta_ < 0 &&
+               std::numeric_limits<int64_t>::min() - value > delta.delta_) {
+      result = std::numeric_limits<int64_t>::min();
+    } else {
+      result = value + delta.delta_;
+    }
+  }
 
   return 0;
 }

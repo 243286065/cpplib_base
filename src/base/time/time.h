@@ -26,6 +26,13 @@ extern const int64_t kNanosecondsPerSecond;
 
 class TimeDelta;
 
+// Add or subtract a TimeDelta from |value|. TimeDelta::Min()/Max() are treated
+// as infinity and will always saturate the return value (infinity math applies
+// if |value| also is at either limit of its spectrum). The int64_t argument and
+// return value are in terms of a microsecond timebase.
+BASE_EXPORT int64_t SaturatedAdd(int64_t value, TimeDelta delta);
+BASE_EXPORT int64_t SaturatedSub(int64_t value, TimeDelta delta);
+
 class BASE_EXPORT TimeDelta {
  public:
   TimeDelta() : delta_(0) {}
@@ -136,13 +143,6 @@ class BASE_EXPORT TimeDelta {
 
   int64_t delta_;
 };
-
-// Add or subtract a TimeDelta from |value|. TimeDelta::Min()/Max() are treated
-// as infinity and will always saturate the return value (infinity math applies
-// if |value| also is at either limit of its spectrum). The int64_t argument and
-// return value are in terms of a microsecond timebase.
-BASE_EXPORT int64_t SaturatedAdd(int64_t value, TimeDelta delta);
-BASE_EXPORT int64_t SaturatedSub(int64_t value, TimeDelta delta);
 
 // For logging use only.
 BASE_EXPORT std::ostream& operator<<(std::ostream& os, TimeDelta time_delta);
