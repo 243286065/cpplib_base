@@ -180,9 +180,9 @@ void test_delay_timer() {
 }
 
 void test_json() {
-	base::Json json("{\"1\":\"123\"}");
-	LOG(WARNING) << json.Str();
-
+	//base::Json json("{\"1\":\"123\"}");
+	//LOG(WARNING) << json.Str();
+  base::Json json;
 	json.AddMember("2", "1234");
 	json.AddMember("2", 12);
 

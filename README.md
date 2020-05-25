@@ -29,7 +29,7 @@ Hash  | base/hash/hash.h | hash散列 | 已完成
 ThreadPool | base/thread/thread_pool.h | 基于消息循环线程的线程池 | 已完成
 ElapsedTimer | base/timer/elapsed_timer.h | 计时器 | 已完成
 DelayTimer | base/timer/delay_timer.h  | 定时器 | 已完成
-Json | base/json.h | Json库封装 | 待开发
+Json | 请直接使用rapidjson,位于`src/base/third_party/rapidjson` | Json库封装 | 放弃,rapidjson已非常好用,完全封装的话非常耗时
 File | base/file/file.h | 文件跨平台封装 | 待开发
 IPCHandler | base/ipc/ipc_handler.h | 封装跨平台进程间通信 | 待开发
 Process | base/process/process.h | 封装跨平台进程创建和运行 | 待开发

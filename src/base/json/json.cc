@@ -25,10 +25,18 @@ Json::Json(const std::string& str) : str_(str) {
 
 Json::~Json() {}
 
-void Json::AddMember(const char* key, const char* value) {
-    rapidjson::Document::AllocatorType& allocator = document_.GetAllocator();
-    document_.AddMember(rapidjson::StringRef(key),
-                      rapidjson::StringRef(value), allocator);
+Json& Json::AddMember(const char* key, const std::string& value) {
+  rapidjson::Document::AllocatorType& allocator = document_.GetAllocator();
+  document_.AddMember(rapidjson::StringRef(key),
+                      rapidjson::StringRef(value.c_str()), allocator);
+  return *this;
+}
+
+Json& Json::AddMember(const char* key, const char* value) {
+  rapidjson::Document::AllocatorType& allocator = document_.GetAllocator();
+  document_.AddMember(rapidjson::StringRef(key), rapidjson::StringRef(value),
+                      allocator);
+  return *this;
 }
 
 std::string Json::Str() {

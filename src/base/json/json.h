@@ -18,22 +18,22 @@ class BASE_EXPORT Json {
 
   std::string Str();
 
+  rapidjson::Document::AllocatorType& GetAllocator() {
+    return document_.GetAllocator();
+  }
+
   bool Valid() { return valid_; }
 
   template <typename ValueType>
-  void AddMember(const const char* key, const ValueType& value) {
+  Json& AddMember(const char* key, const ValueType& value) {
     rapidjson::Document::AllocatorType& allocator = document_.GetAllocator();
     document_.AddMember(rapidjson::StringRef(key), value, allocator);
+    return *this;
   }
 
-  template <>
-  void AddMember<std::string>(const char* key, const std::string& value) {
-    rapidjson::Document::AllocatorType& allocator = document_.GetAllocator();
-    document_.AddMember(rapidjson::StringRef(key),
-                        rapidjson::StringRef(value.c_str()), allocator);
-  }
+  Json& AddMember(const char* key, const std::string& value);
 
-  void AddMember(const char* key, const char* value);
+  Json& AddMember(const char* key, const char* value);
 
  private:
   std::string str_;
