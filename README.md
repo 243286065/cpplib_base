@@ -30,7 +30,7 @@ ThreadPool | base/thread/thread_pool.h | 基于消息循环线程的线程池 | 
 ElapsedTimer | base/timer/elapsed_timer.h | 计时器 | 已完成
 DelayTimer | base/timer/delay_timer.h  | 定时器 | 已完成
 Json | 请直接使用rapidjson,位于`src/base/third_party/rapidjson` | Json库封装 | 放弃,rapidjson已非常好用,完全封装的话非常耗时
-TreeArray | base/array/tree_array.h | 树型数组 | 模板类,只支持数学计算的类型,如int/float/double等; 数组索引从1开始
+TreeArray | base/array/tree_array.h | 树型数组 | 已完成
 File | base/file/file.h | 文件跨平台封装 | 待开发
 IPCHandler | base/ipc/ipc_handler.h | 封装跨平台进程间通信 | 待开发
 Process | base/process/process.h | 封装跨平台进程创建和运行 | 待开发
@@ -433,3 +433,7 @@ LOG(WARNING) << "-----7-------" << tree.sum(100);
 [1150:1150:0527/170551.372591:WARNING:thread_test.cc(211)] -----6-------1275
 [1150:1150:0527/170551.372608:WARNING:thread_test.cc(212)] -----7-------5050
 ```
+
+> 注意: 只支持数学计算的类型,如int/float/double等; 数组索引是从1开始.
+
+接口都很简单,一目了然.
