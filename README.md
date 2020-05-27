@@ -30,6 +30,7 @@ ThreadPool | base/thread/thread_pool.h | 基于消息循环线程的线程池 | 
 ElapsedTimer | base/timer/elapsed_timer.h | 计时器 | 已完成
 DelayTimer | base/timer/delay_timer.h  | 定时器 | 已完成
 Json | 请直接使用rapidjson,位于`src/base/third_party/rapidjson` | Json库封装 | 放弃,rapidjson已非常好用,完全封装的话非常耗时
+TreeArray | base/array/tree_array.h | 树型数组 | 模板类,只支持数学计算的类型,如int/float/double等; 数组索引从1开始
 File | base/file/file.h | 文件跨平台封装 | 待开发
 IPCHandler | base/ipc/ipc_handler.h | 封装跨平台进程间通信 | 待开发
 Process | base/process/process.h | 封装跨平台进程创建和运行 | 待开发
@@ -393,3 +394,42 @@ AsyncWait | 异步等待,定时器超时后任务会在其他线程上执行 | �
 Cancle | 取消定时器 | 会立刻取消所有还未触发的任务
 
 > 注意:本定时器,一个定时器可以多次wait,每次都是重新开始计时.
+
+## TreeArray
+树型数组:就是用数组来模拟树状结构,常用在频繁执行数组前缀和计算的场景中. 有关介绍可以参考: https://www.cnblogs.com/xl2432/p/12974749.html . 
+
+示例:
+```
+#include "base/array/tree_array.h"
+
+base::TreeArray<int> tree(100);
+for(int i = 1; i <= 100; i++) {
+    tree.set(i, i);
+}
+
+LOG(WARNING) << "-----0-------" << tree.get(50);
+LOG(WARNING) << "-----1-------" << tree.get(100);
+LOG(WARNING) << "-----2-------" << tree.sum(50);
+LOG(WARNING) << "-----3-------" << tree.sum(100);
+tree.add(50, 1);
+LOG(WARNING) << "-----0-------" << tree.get(50);
+LOG(WARNING) << "-----4-------" << tree.sum(50);
+LOG(WARNING) << "-----5-------" << tree.sum(100);
+tree.set(50, 50);
+LOG(WARNING) << "-----0-------" << tree.get(50);
+LOG(WARNING) << "-----6-------" << tree.sum(50);
+LOG(WARNING) << "-----7-------" << tree.sum(100);
+```
+输出:
+```
+[1150:1150:0527/170551.372410:WARNING:thread_test.cc(201)] -----0-------50
+[1150:1150:0527/170551.372463:WARNING:thread_test.cc(202)] -----1-------100
+[1150:1150:0527/170551.372481:WARNING:thread_test.cc(203)] -----2-------1275
+[1150:1150:0527/170551.372501:WARNING:thread_test.cc(204)] -----3-------5050
+[1150:1150:0527/170551.372519:WARNING:thread_test.cc(206)] -----0-------51
+[1150:1150:0527/170551.372537:WARNING:thread_test.cc(207)] -----4-------1276
+[1150:1150:0527/170551.372556:WARNING:thread_test.cc(208)] -----5-------5051
+[1150:1150:0527/170551.372573:WARNING:thread_test.cc(210)] -----0-------50
+[1150:1150:0527/170551.372591:WARNING:thread_test.cc(211)] -----6-------1275
+[1150:1150:0527/170551.372608:WARNING:thread_test.cc(212)] -----7-------5050
+```

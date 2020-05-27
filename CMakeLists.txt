@@ -88,6 +88,7 @@ set(
     ${PROJECT_SOURCE_DIR}/src/base/utils.h
     ${PROJECT_SOURCE_DIR}/src/base/json/json.cc
     ${PROJECT_SOURCE_DIR}/src/base/json/json.h
+    ${PROJECT_SOURCE_DIR}/src/base/array/tree_array.h
 )
 include_directories(${PROJECT_SOURCE_DIR}/src)
 

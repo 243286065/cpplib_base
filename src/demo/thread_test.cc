@@ -10,6 +10,7 @@
 #include "base/time/time.h"
 #include "base/timer/delay_timer.h"
 #include "base/json/json.h"
+#include "base/array/tree_array.h"
 
 #include <iostream>
 
@@ -191,6 +192,26 @@ void test_json() {
 	LOG(WARNING) << json.Str();
 }
 
+void test_tree_array() {
+  base::TreeArray<int> tree(100);
+  for(int i = 1; i <= 100; i++) {
+    tree.set(i, i);
+  }
+
+  LOG(WARNING) << "-----0-------" << tree.get(50);
+  LOG(WARNING) << "-----1-------" << tree.get(100);
+  LOG(WARNING) << "-----2-------" << tree.sum(50);
+  LOG(WARNING) << "-----3-------" << tree.sum(100);
+  tree.add(50, 1);
+  LOG(WARNING) << "-----0-------" << tree.get(50);
+  LOG(WARNING) << "-----4-------" << tree.sum(50);
+  LOG(WARNING) << "-----5-------" << tree.sum(100);
+  tree.set(50, 50);
+  LOG(WARNING) << "-----0-------" << tree.get(50);
+  LOG(WARNING) << "-----6-------" << tree.sum(50);
+  LOG(WARNING) << "-----7-------" << tree.sum(100);
+}
+
 int main() {
 
 
@@ -206,6 +227,7 @@ int main() {
 
   // test_timer();
   //test_delay_timer();
-  test_json();
+  //test_json();
+  test_tree_array();
   return 0;
 }
