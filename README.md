@@ -13,6 +13,9 @@ cmake .. -DCMAKE_BUILD_TYPE=Debug/Release
 make
 ```
 
+# 单元测试
+可以在make编译完后执行`make test`,或者直接运行生成的单元测试程序`base_unittest`.
+
 # 开发计划
 先列着,慢慢来吧~~~  
 类或函数 | 文件 | 说明 | 完成情况
