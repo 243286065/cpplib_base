@@ -9,7 +9,7 @@ add_definitions(-DOS_ARCH=${CMAKE_SYSTEM_NAME})
 
 IF (CMAKE_BUILD_TYPE STREQUAL Debug)
     add_definitions(-DDEBUG)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -pthread")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
     message(STATUS "Compile Debug")
 ELSE()
     add_definitions(-DRELEASE)
@@ -24,6 +24,23 @@ ELSEIF (APPLE)
 ELSEIF (UNIX)
     add_definitions(-DOS_LINUX=1)
 ENDIF ()
+
+IF( ${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC )
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D_WIN32_WINNT=0x0601 /W4 /wd4068 /wd4702 /wd4996" )
+
+    set(CompilerFlags
+        CMAKE_CXX_FLAGS
+        CMAKE_CXX_FLAGS_DEBUG
+        CMAKE_CXX_FLAGS_RELEASE
+        CMAKE_C_FLAGS
+        CMAKE_C_FLAGS_DEBUG
+        CMAKE_C_FLAGS_RELEASE
+        )
+    foreach(CompilerFlag ${CompilerFlags})
+        string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
+    endforeach()
+ENDIF()
+set(CMAKE_CXX_STANDARD 11)
 
 set(PROJECT_OUTPUT_DIR ${PROJECT_BINARY_DIR}/${CMAKE_SYSTEM_PROCESSOR})
 message("-- output path:  ${PROJECT_OUTPUT_DIR} ")
