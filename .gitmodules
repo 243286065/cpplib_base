@@ -1,9 +1,6 @@
 [submodule "src/base/third_party/rapidjson"]
 	path = src/base/third_party/rapidjson
 	url = https://github.com/Tencent/rapidjson.git
-[submodule "src/base/third_party/asio"]
-	path = src/base/third_party/asio
-	url = https://github.com/boostorg/asio.git
 [submodule "src/base/third_party/googletest"]
 	path = src/base/third_party/googletest
 	url = https://github.com/google/googletest.git
