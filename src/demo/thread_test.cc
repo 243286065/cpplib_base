@@ -189,7 +189,12 @@ void test_json() {
 
 	std::string value = "123";
 	json.AddMember("2", value);
+  json["2"] = "123456";
+  
 	LOG(WARNING) << json.Str();
+  LOG(WARNING) << json["2"].GetString();
+  LOG(WARNING) << json.HasMember("2");
+  // LOG(WARNING) << json[1].IsNull();
 }
 
 void test_tree_array() {
@@ -227,7 +232,7 @@ int main() {
 
   // test_timer();
   //test_delay_timer();
-  //test_json();
+  test_json();
   test_tree_array();
   return 0;
 }

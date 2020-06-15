@@ -134,7 +134,8 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 set(
     unittestSrc
     src/base/testing/test_main.cc
-    src/base/hash/md5_unittest.cc
+    src/test/hash/md5_unittest.cc
+    src/test/json/json_unittest.cc
 )
 
 add_executable(base_unittest ${unittestSrc})
