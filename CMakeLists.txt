@@ -59,8 +59,6 @@ set(
     ${PROJECT_SOURCE_DIR}/src/base/third_party/modp_b64/modp_b64_data.h
     ${PROJECT_SOURCE_DIR}/src/base/third_party/modp_b64/modp_b64.cc
     ${PROJECT_SOURCE_DIR}/src/base/third_party/modp_b64/modp_b64.h
-    ${PROJECT_SOURCE_DIR}/src/base/third_party/md5/md5.cc
-    ${PROJECT_SOURCE_DIR}/src/base/third_party/md5/md5.h
 )
 
 set(
