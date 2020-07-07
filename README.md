@@ -28,6 +28,7 @@ Singleton | base/singleton.h | 单例模板类 | 已完成
 AtExitManager | base/at_exit.h | 注册退出函数   | 已完成
 Base64Encode/Base64Decode | base/encode/base64.h | base64加密和解密 | 已完成
 Md5 | base/encode/md5.h | md5散列 | 已完成
+CRC32 | base/hash/crc32.h | crc32校验值计算 | 已完成
 Hash  | base/hash/hash.h | hash散列 | 已完成
 ThreadPool | base/thread/thread_pool.h | 基于消息循环线程的线程池 | 已完成
 ElapsedTimer | base/timer/elapsed_timer.h | 计时器 | 已完成
@@ -298,7 +299,7 @@ LOG(WARNING) << "-----md5------" << base::FastMD5(test);
 [14202:14202:0519/210024.549981:WARNING:thread_test.cc(133)] -----md5------d482a1faf595dc83ecbc5378b25f90af
 ```
 
-宽字符串也是先转换成char再进行计算hash值的.
+> 宽字符串也是先转换成char再进行计算hash值的.
 
 ### 接口
 函数或接口 | 说明 | 注意事项
@@ -306,7 +307,10 @@ LOG(WARNING) << "-----md5------" << base::FastMD5(test);
 Hash | 得到32位整数值结果的hash | 注意存放结果的buff需要自己分配足够内存
 Hash64 | 得到64位整数的hash | 注意存放结果的buff需要自己分配足够内存
 Hash128 | 得到128位整数的hash | 结果以一个pair<64,64>保存; 注意存放结果的buff需要自己分配足够内存
-FastMD5 | md5计算 | 
+FastMD5 | md5计算 | 快速计算一个字符串的md5值
+FastFileMD5 | 文件的md5值计算 | 计算一个文件的md5值
+MD5 | md5类 | 用于定制需求
+Crc32 | crc32计算接口 | 提供了两个接口,分别计算字符串和文件的crc32值
 
 ## ElapsedTimer
 一个简单的计时器. **创建时就开始计时**.

@@ -56,6 +56,7 @@ set(
     DepSrc
     ${PROJECT_SOURCE_DIR}/src/base/third_party/cityhash/city.cc
     ${PROJECT_SOURCE_DIR}/src/base/third_party/cityhash/city.h
+    ${PROJECT_SOURCE_DIR}/src/base/third_party/crc32/crc32.hpp
     ${PROJECT_SOURCE_DIR}/src/base/third_party/modp_b64/modp_b64_data.h
     ${PROJECT_SOURCE_DIR}/src/base/third_party/modp_b64/modp_b64.cc
     ${PROJECT_SOURCE_DIR}/src/base/third_party/modp_b64/modp_b64.h
@@ -71,6 +72,8 @@ set(
     ${PROJECT_SOURCE_DIR}/src/base/encode/base64.h
     ${PROJECT_SOURCE_DIR}/src/base/file/file_utils.cc
     ${PROJECT_SOURCE_DIR}/src/base/file/file_utils.h
+    ${PROJECT_SOURCE_DIR}/src/base/hash/crc32.cc
+    ${PROJECT_SOURCE_DIR}/src/base/hash/crc32.h
     ${PROJECT_SOURCE_DIR}/src/base/hash/hash.cc
     ${PROJECT_SOURCE_DIR}/src/base/hash/hash.h
     ${PROJECT_SOURCE_DIR}/src/base/hash/md5.cc
@@ -132,6 +135,7 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 set(
     unittestSrc
     src/base/testing/test_main.cc
+    src/test/hash/crc32_unittest.cc
     src/test/hash/md5_unittest.cc
     src/test/json/json_unittest.cc
 )
