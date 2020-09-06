@@ -68,10 +68,10 @@ class BASE_EXPORT TimeDelta {
 
   // Returns true if the time delta is the maximum/minimum time delta.
   constexpr bool is_max() const {
-    return delta_ == std::numeric_limits<int64_t>::max();
+    return delta_ == (std::numeric_limits<int64_t>::max)();
   }
   constexpr bool is_min() const {
-    return delta_ == std::numeric_limits<int64_t>::min();
+    return delta_ == (std::numeric_limits<int64_t>::min)();
   }
 
   // Returns the time delta in some unit. The InXYZF versions return a floating
