@@ -36,9 +36,9 @@ IF( ${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC )
         CMAKE_C_FLAGS_DEBUG
         CMAKE_C_FLAGS_RELEASE
         )
-    foreach(CompilerFlag ${CompilerFlags})
-        string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
-    endforeach()
+    #foreach(CompilerFlag ${CompilerFlags})
+    #    string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
+    #endforeach()
 ENDIF()
 set(CMAKE_CXX_STANDARD 11)
 
@@ -128,39 +128,32 @@ add_library(
 
 
 # compile demo
-set(
-    demoSrc
-    ${PROJECT_SOURCE_DIR}/src/demo/thread_test.cc
-)
+#set(
+#    demoSrc
+#    ${PROJECT_SOURCE_DIR}/src/demo/thread_test.cc
+#)
 
-add_executable(demo ${demoSrc})
-target_link_libraries(demo base)
+#add_executable(demo ${demoSrc})
+#target_link_libraries(demo base)
 
 
-option(UNITTEST_FLAG "option for unittest" ON)
-if(UNITTEST_FLAG)
-    #Unit test
-    add_subdirectory(src/base/third_party/googletest)
-    enable_testing()
-    include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+#Unit test
+#add_subdirectory(src/base/third_party/googletest)
+#enable_testing()
+#include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
-    set(
-        unittestSrc
-        src/base/testing/test_main.cc
-        src/test/hash/crc32_unittest.cc
-        src/test/hash/md5_unittest.cc
-        src/test/json/json_unittest.cc
-        src/test/guid/guid_unittest.cc
-        src/test/guid/rand_unittest.cc
-        src/test/string/string_unittest.cc
-    )
+#set(
+#    unittestSrc
+#    src/base/testing/test_main.cc
+#    src/test/hash/crc32_unittest.cc
+#    src/test/hash/md5_unittest.cc
+#    src/test/json/json_unittest.cc
+#)
 
-    add_executable(base_unittest ${unittestSrc})
-    target_link_libraries(base_unittest gtest gtest_main)
-    target_link_libraries(base_unittest ${PROJECT_NAME})
+#add_executable(base_unittest ${unittestSrc})
+#target_link_libraries(base_unittest gtest gtest_main)
+#target_link_libraries(base_unittest ${PROJECT_NAME})
 
-    # This is so you can do 'make test' to see all your tests run, instead of
-    # manually running the executable runUnitTests to see those specific tests.
-    add_test(NAME test COMMAND base_unittest)
-
-endif()
+# This is so you can do 'make test' to see all your tests run, instead of
+# manually running the executable runUnitTests to see those specific tests.
+#add_test(NAME test COMMAND base_unittest)
