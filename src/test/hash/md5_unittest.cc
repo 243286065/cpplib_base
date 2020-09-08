@@ -27,11 +27,13 @@ TEST(MD5TEST, UpdateMD5_English) {
 }
 
 TEST(MD5TEST, UpdateMD5_Chinese) {
+#if defined(OS_LINUX)
   MD5 md5("中华");
   std::string input = "人民共和国";
   md5.update((const byte*)input.c_str(), input.size());
   LOG(INFO) << "中华人民共和国: " << FastMD5("中华人民共和国");
   EXPECT_EQ(md5.toStr(), FastMD5("中华人民共和国"));
+#endif
 }
 
 TEST(MD5TEST, FastFileMD5) {

@@ -15,4 +15,10 @@ int vsnprintf(char* buffer,
   return ::vsnprintf(buffer, size, format, arguments);
 }
 
+#if defined(OS_WIN)
+int vswprintf(wchar_t* buffer, size_t size, const wchar_t* format, va_list arguments) {
+  return ::vswprintf(buffer, size, format, arguments);
+}
+#endif
+
 }  // namespace base

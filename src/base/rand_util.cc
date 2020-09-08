@@ -18,6 +18,7 @@
 #include <windows.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <ntsecapi.h>
 #endif
 
 #include "base/log/logging.h"
@@ -52,7 +53,7 @@ uint64_t RandGenerator(uint64_t range) {
   // MAX_UINT64 was 7 and |range| was 5, then a result of 1 would be twice
   // as likely as a result of 3 or 4).
   uint64_t max_acceptable_value =
-      (std::numeric_limits<uint64_t>::max() / range) * range - 1;
+      ((std::numeric_limits<uint64_t>::max)() / range) * range - 1;
 
   uint64_t value;
   do {
@@ -91,8 +92,8 @@ void RandBytes(void* output, size_t output_length) {
 #elif defined(OS_WIN)
   char* output_ptr = static_cast<char*>(output);
   while (output_length > 0) {
-    const ULONG output_bytes_this_pass = static_cast<ULONG>(std::min(
-        output_length, static_cast<size_t>(std::numeric_limits<ULONG>::max())));
+    const unsigned long output_bytes_this_pass = static_cast<unsigned long>((std::min)(
+        output_length, static_cast<size_t>((std::numeric_limits<unsigned long>::max)())));
     const bool success =
         RtlGenRandom(output_ptr, output_bytes_this_pass) != FALSE;
     CHECK(success);
