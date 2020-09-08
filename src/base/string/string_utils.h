@@ -20,4 +20,7 @@ inline bool IsHexDigit(Char c) {
 int vsnprintf(char* buffer, size_t size, const char* format, va_list arguments)
     PRINTF_FORMAT(3, 0);
 
+#if defined(OS_WIN)
+int vswprintf(wchar_t* buffer, size_t size, const wchar_t* format, va_list arguments);
+#endif
 } // namespace base

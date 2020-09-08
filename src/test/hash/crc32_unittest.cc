@@ -14,7 +14,9 @@ TEST(CRC32TEST, Crc32) {
   EXPECT_EQ(Crc32(""), 0);
   EXPECT_EQ(Crc32("base"), 3233087073);
   EXPECT_EQ(Crc32("bAse"), 4177115265);
+#if defined(OS_LINUX)
   EXPECT_EQ(Crc32("生成 $str 的 32 位循环冗余校验码多项式。这通常用于检查传输的数据是否完整。"), 129102744);
+#endif
 }
 
 TEST(CRC32TEST, Crc32File) {
