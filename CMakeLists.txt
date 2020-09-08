@@ -107,6 +107,15 @@ set(
     ${PROJECT_SOURCE_DIR}/src/base/json/json.cc
     ${PROJECT_SOURCE_DIR}/src/base/json/json.h
     ${PROJECT_SOURCE_DIR}/src/base/array/tree_array.h
+    ${PROJECT_SOURCE_DIR}/src/base/rand_util.cc
+    ${PROJECT_SOURCE_DIR}/src/base/rand_util.h
+    ${PROJECT_SOURCE_DIR}/src/base/guid.cc
+    ${PROJECT_SOURCE_DIR}/src/base/guid.h
+    ${PROJECT_SOURCE_DIR}/src/base/string/string_utils.cc
+    ${PROJECT_SOURCE_DIR}/src/base/string/string_utils.h
+    ${PROJECT_SOURCE_DIR}/src/base/string/stringprintf.cc
+    ${PROJECT_SOURCE_DIR}/src/base/string/stringprintf.h
+    ${PROJECT_SOURCE_DIR}/src/base/stl_util.h
 )
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
@@ -138,6 +147,8 @@ set(
     src/test/hash/crc32_unittest.cc
     src/test/hash/md5_unittest.cc
     src/test/json/json_unittest.cc
+    src/test/guid/guid_unittest.cc
+    src/test/guid/rand_unittest.cc
 )
 
 add_executable(base_unittest ${unittestSrc})

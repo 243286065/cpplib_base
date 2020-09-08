@@ -35,6 +35,8 @@ ElapsedTimer | base/timer/elapsed_timer.h | 计时器 | 已完成
 DelayTimer | base/timer/delay_timer.h  | 定时器 | 已完成
 Json | 简单封装,复杂操作请直接使用rapidjson,位于`src/base/third_party/rapidjson` | Json库封装 | 已完成,可参考单元测试`src/test/json/json_unittest.cc`
 TreeArray | base/array/tree_array.h | 树型数组 | 已完成
+GUID | base/guid.h | 生成guid | 已完成
+Rand | base/rand_util.h | 产生简单的随机数 | 已完成
 File | base/file/file.h | 文件跨平台封装 | 待开发
 IPCHandler | base/ipc/ipc_handler.h | 封装跨平台进程间通信 | 待开发
 Process | base/process/process.h | 封装跨平台进程创建和运行 | 待开发
@@ -444,3 +446,35 @@ LOG(WARNING) << "-----7-------" << tree.sum(100);
 > 注意: 只支持数学计算的类型,如int/float/double等; 数组索引是从1开始.
 
 接口都很简单,一目了然.
+
+## GUID
+全局唯一标识符（英語：Globally Unique Identifier，缩写：GUID）是一种由算法生成的唯一标识，通常表示成32个16进制数字（0－9，A－F）组成的字符串。
+
+本项目中提供小写版本的guid生成器，格式类似：`01234567-89ab-cdef-fedc-ba9876543210`。 需要大写的请使用`base/string/string_convert.h`里的`StrToUpper`将其再转成大写字母。
+
+代码位置：`src/base/guid.h`
+
+### 接口
+函数或接口 | 说明 | 注意事项
+-- | -- | --
+GenerateGUID | 生成一个guid | 
+IsValidGUID | 判断是否是合法的guid |
+RandomDataToGUIDString | 将一个`uint64_t[2]`的数组转换为一个guid
+
+具体实例，请参考单元测试：`src/test/guid/guid_unittest.cc`。
+
+## Rand
+使用系统调用实现的不容易重复的随机数生成器，GUID是基于该Rand实现的，实测比C++库中的随机数生成器生成的数重复概率小。
+
+代码位置： `src/base/rand_util.h`
+
+### 接口
+函数或接口 | 说明 | 注意事项
+-- | -- | --
+RandUint64 | 生成一个uint64_t随机数 | 
+RandInt | 生成一个int随机数 |
+RandGenerator | 生成一个范围内的随机数 |
+RandDouble | 生成一个浮点随机数 |
+RandBytes | 使用随机数填充缓冲区 |
+
+具体实例，请参考单元测试：`src/test/guid/rand_unittest.cc`。
