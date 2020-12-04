@@ -4,6 +4,7 @@
 #include <condition_variable>
 #include <mutex>
 #include <queue>
+#include <atomic>
 
 #include "base/macros.h"
 #include "base/thread/closure.h"
@@ -23,6 +24,7 @@ class BASE_EXPORT TaskQueue {
 
   void Clear();
 
+  void Close();
  private:
   struct ClouserCompare {
     bool operator()(const Closure& a, const Closure& b) {
@@ -38,6 +40,7 @@ class BASE_EXPORT TaskQueue {
       task_queue_;
 
   std::condition_variable cond_;
+  std::atomic_bool stop_;
 
   DISALLOW_COPY_AND_ASSIGN(TaskQueue);
 };

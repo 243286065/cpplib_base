@@ -15,6 +15,7 @@ class TaskQueue;
 
 class BASE_EXPORT Closure {
  public:
+  Closure();
   Closure(const OnceCallback& task, const OnceCallback& callback);
   Closure(const TimeDelta& delay,
           const OnceCallback& task,
@@ -22,6 +23,9 @@ class BASE_EXPORT Closure {
   ~Closure();
 
   void RunTask() const;
+  bool isNull() const {
+    return is_null_;
+  }
 
  private:
   void RunCallback() const;
@@ -33,6 +37,7 @@ class BASE_EXPORT Closure {
   int64_t timestamp_active_;
   OnceCallback task_;
   OnceCallback callback_;
+  bool is_null_;
 };
 
 }  // namespace base

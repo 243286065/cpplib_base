@@ -2,9 +2,18 @@
 
 namespace base {
 
-TaskQueue::TaskQueue() {}
+TaskQueue::TaskQueue() : stop_(false) {}
 
-TaskQueue::~TaskQueue() {}
+TaskQueue::~TaskQueue() {
+  if(!stop_)
+    Close();
+}
+
+void TaskQueue::Close() {
+  std::lock_guard<std::mutex> lock(mutex_);
+  stop_ = true;
+  cond_.notify_all();
+}
 
 void TaskQueue::PushTask(const Closure& task) {
   std::lock_guard<std::mutex> lock(mutex_);
@@ -14,15 +23,18 @@ void TaskQueue::PushTask(const Closure& task) {
 
 const Closure TaskQueue::PopTask() {
   std::unique_lock<std::mutex> lock(mutex_);
-  while (task_queue_.empty()) {
+  while (!stop_ && task_queue_.empty()) {
     cond_.wait(lock);
   }
+
+  if(task_queue_.empty())
+    return Closure();
 
   auto delay = Now() - task_queue_.top().timestamp_active_;
   while(true) {
     auto delay = Now() - task_queue_.top().timestamp_active_;
     if(delay < 0) {
-      cond_.wait_for(lock, std::chrono::microseconds(delay));
+      cond_.wait_for(lock, std::chrono::microseconds(std::abs(delay)));
     } else {
       break;
     }

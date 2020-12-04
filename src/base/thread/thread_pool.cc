@@ -35,6 +35,7 @@ void ThreadPool::Stop() {
   if (!is_stopped_) {
     is_stopped_ = true;
 
+    task_queue_.Close();
     for (auto& thread : work_thread_list_) {
       thread->Stop();
     }

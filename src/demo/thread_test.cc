@@ -27,7 +27,7 @@ void printOnMain() {
 void printOnUi(base::MessageLoop* main_loop) {
   LOG(INFO) << "--------------ui thread-----------------"
             << base::GetTaskCurrentThreadId();
-  // main_loop->PostTask(printOnMain);
+  main_loop->PostTask(printOnMain);
   main_loop->Stop();
 }
 
@@ -69,11 +69,11 @@ void test_thread() {
   thread_io.PostTaskAndReply(printOnIO, std::bind(printOnUi, &loop));
   // thread_ui.PostTaskAndReply(printOnUi, printOnMain);
   thread_ui.PostTask(std::bind(printResult, 100));
-
+  LOG(WARNING) << "------------------------------232------------------------------------------";
   // loop.PostTask(printOnMain);
   // thread_io.PostTaskAndReply(printOnIO, printOnMain);
   loop.RunLoop();
-  LOG(INFO) << "------------------------------END------------------------------------------";
+  LOG(WARNING) << "------------------------------END------------------------------------------";
   //LOG(FATAL) << 123;
   LOG(DEBUG) << 12345;
   DLOG(WARNING) << "---DLOG----";
@@ -121,10 +121,11 @@ void test_threadpool() {
   auto timestamp = base::GetMillSecondsTimestamp();
   for(int i= 0 ; i< 10000; i++) {
     pool.PostTask([=]() {
-      LOG(WARNING) << "----------------------------" << i;
+      // LOG(WARNING) << "----------------------------" << i;
       // std::this_thread::sleep_for(std::chrono::seconds(3));
     });
   }
+  // std::this_thread::sleep_for(std::chrono::milliseconds(2));
   pool.Stop();
   LOG(WARNING) << "Use time: " << base::GetMillSecondsTimestamp() - timestamp << " ms";
 }
@@ -221,18 +222,22 @@ int main() {
 
 
   logging::InitLogging("", logging::LOG_ONLY_TO_SYSTEM_DEBUG_LOG, logging::APPEND_TO_OLD_LOG_FILE);
+  logging::SetMinLogLevel(logging::LOG_INFO);
   // while(true) {
-  //     test_thread();
+      // test_thread();
+  //     std::this_thread::sleep_for(std::chrono::seconds(10));
   // }
   //   std::this_thread::sleep_for(std::chrono::seconds(10));
   //test_base64();
 
-  //test_threadpool();
+  // while(true) {
+  // test_threadpool();
+  // }
   //test_hash();
 
-  // test_timer();
-  //test_delay_timer();
-  test_json();
-  test_tree_array();
+  test_timer();
+  test_delay_timer();
+  // test_json();
+  // test_tree_array();
   return 0;
 }

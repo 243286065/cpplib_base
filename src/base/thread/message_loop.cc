@@ -3,7 +3,6 @@
 #include "base/thread/closure.h"
 #include "base/thread/message_loop_manager.h"
 #include "base/utils.h"
-
 namespace base {
 
 MessageLoop::MessageLoop() : is_stopped_(true), stopped_soon_(false), thread_id_(0) {
@@ -11,6 +10,7 @@ MessageLoop::MessageLoop() : is_stopped_(true), stopped_soon_(false), thread_id_
 }
 
 MessageLoop::~MessageLoop() {
+  task_queue_.Close();
   UnBindToCurrentThread();
 }
 
@@ -84,10 +84,6 @@ void MessageLoop::PostDelayTaskAndReply(const TimeDelta& delay, const OnceCallba
 }
 
 void MessageLoop::BindToCurrentThread() {
-  if(thread_id_ != 0) {
-    UnBindToCurrentThread();
-  }
-
 	thread_id_ = GetTaskCurrentThreadId();
   MessageLoopManagerSingleton::GetInstance()->RegisterMessageLoop(this);
 }
