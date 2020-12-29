@@ -91,8 +91,9 @@ LogMessage::LogMessage(LogSeverity severity, const char* file, const int line)
       severity_str_ = "UNKNOW";
   }
 
-  stream_ << '[' << base::GetTaskCurrentProcessId() << ":"
-          << base::GetTaskCurrentThreadId() << ":";
+  thread_local uint32_t pid = base::GetTaskCurrentProcessId();
+  thread_local uint32_t tid = base::GetTaskCurrentThreadId();
+  stream_ << '[' << pid << ":" << tid << ":";
 
 #if defined(OS_WIN)
   SYSTEMTIME local_time;
