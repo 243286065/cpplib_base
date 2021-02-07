@@ -13,9 +13,9 @@ TEST(JsonTest, ParseJsonString) {
 
   EXPECT_EQ(json.IsArray(), false);
   EXPECT_EQ(json.HasMember("age"), true);
-  EXPECT_EQ(json["name"].GetString(), "zhangsan");
+  EXPECT_EQ(std::string(json["name"].GetString()), "zhangsan");
   EXPECT_EQ(json["age"].GetInt(), 12);
-  EXPECT_EQ(json["city"].GetString(), "beijing");
+  EXPECT_EQ(std::string(json["city"].GetString()), "beijing");
   EXPECT_EQ(json["weight"].GetFloat(), 72.5);
   LOG(WARNING) << json.Str();
 
