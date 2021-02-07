@@ -56,33 +56,4 @@ std::string UnicodeToAnsi(const std::wstring& data) {
   return result;
 }
 
-std::string StrToUpper(const std::string& str) {
-  std::string newStr = str;
-  std::transform(newStr.begin(), newStr.end(), newStr.begin(), ::toupper);
-  return newStr;
-}
-
-bool IsDigitStrs(const std::string& str) {
-  for (int i = 0; i < str.size(); i++) {
-    if (!isdigit(str[i])) {
-      return false;
-    }
-  }
-  return true;
-}
-
-bool StartWith(const std::string& target, const std::string& sub) {
-  return target.find(sub) == 0 ? true : false;
-}
-
-std::vector<std::string> SplitStr(const std::string& s, char delim) {
-  std::stringstream ss(s);
-  std::string item;
-  std::vector<std::string> elems;
-  while (std::getline(ss, item, delim)) {
-    elems.push_back(std::move(item));
-  }
-  return elems;
-}
-
 }  // namespace base

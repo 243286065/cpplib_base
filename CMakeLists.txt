@@ -113,6 +113,7 @@ set(
     ${PROJECT_SOURCE_DIR}/src/base/guid.h
     ${PROJECT_SOURCE_DIR}/src/base/string/string_utils.cc
     ${PROJECT_SOURCE_DIR}/src/base/string/string_utils.h
+    ${PROJECT_SOURCE_DIR}/src/base/string/string_utils_internal.h
     ${PROJECT_SOURCE_DIR}/src/base/string/stringprintf.cc
     ${PROJECT_SOURCE_DIR}/src/base/string/stringprintf.h
     ${PROJECT_SOURCE_DIR}/src/base/stl_util.h
@@ -149,6 +150,7 @@ set(
     src/test/json/json_unittest.cc
     src/test/guid/guid_unittest.cc
     src/test/guid/rand_unittest.cc
+    src/test/string/string_unittest.cc
 )
 
 add_executable(base_unittest ${unittestSrc})

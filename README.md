@@ -37,6 +37,7 @@ Json | 简单封装,复杂操作请直接使用rapidjson,位于`src/base/third_p
 TreeArray | base/array/tree_array.h | 树型数组 | 已完成
 GUID | base/guid.h | 生成guid | 已完成
 Rand | base/rand_util.h | 产生简单的随机数 | 已完成
+String | base/string/string_utils.h | 提供字符串比较、判断开头和结尾等操作 | 部分完成，待后续完善
 File | base/file/file.h | 文件跨平台封装 | 待开发
 IPCHandler | base/ipc/ipc_handler.h | 封装跨平台进程间通信 | 待开发
 Process | base/process/process.h | 封装跨平台进程创建和运行 | 待开发
@@ -478,3 +479,24 @@ RandDouble | 生成一个浮点随机数 |
 RandBytes | 使用随机数填充缓冲区 |
 
 具体实例，请参考单元测试：`src/test/guid/rand_unittest.cc`。
+
+## String
+提供各种字符串操作。由于相关的操作比较多，待后续继续完善。  
+代码位置`src/base/string/string_utils.h`、`src/base/string/string_convert.h`。
+
+### 接口
+函数或接口 | 说明 | 注意事项
+-- | -- | --
+IsHexDigit | 模板函数，判断类是否是是16进制字符,大小写均可 | 支持char和wchar
+ToLowerASCII | 转换成小写 | char和wchar、string和wstring均可
+ToUpperASCII | 转换成大写 | char和wchar、string和wstring均可
+CompareCaseInsensitiveASCII | 忽略大小写比较字符串 | 前者比后者大，返回1；两者相等，返回0；前者比后者小，返回-1；从头往后找，因此长度长的不一定大；支持string和wstring
+EqualsCaseInsensitiveASCII | 判断两个字符串是否相等，忽略大小 | 支持string和wstring
+StartsWith | 判断字符串开头 | 支持string和wstring; 第三个参数可以指明是否忽略大小写
+EndsWith | 判断字符串结尾 | 支持string和wstring; 第三个参数可以指明是否忽略大小写
+IsDigitStrs | 判断字符串中是否只有数字字符 | 支持string和wstring
+SplitStr | 将字符串按照指定字符分割，以vector形式返回 | 注意如果最后一个字符恰好为指定字符，那么其后面不会认为是一个元素
+AnsiToUnicode | char* 转 wchar_t* 或者 string转wstring | 两个版本
+UnicodeToAnsi | wchar_t*转char* 或者wstring转string |
+
+具体实例，请参考单元测试：`src/test/string/string_unittest.cc`。
