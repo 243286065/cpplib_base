@@ -8,6 +8,7 @@
 
 #if defined(OS_WIN)
 #include <windows.h>
+#include <algorithm>
 #endif
 
 namespace base {
@@ -548,7 +549,7 @@ std::string FilePath::AsUTF8Unsafe() const {
   return base::UnicodeToAnsi(path_);
 }
 
-string16 FilePath::AsUTF16Unsafe() const {
+std::wstring FilePath::AsUTF16Unsafe() const {
   return path_;
 }
 
@@ -603,7 +604,7 @@ int FilePath::CompareIgnoreCase(const StringType& string1,
   // conversions regardless of locale. The STL alternative, towupper, has a
   // locale consideration that prevents it from converting all characters by
   // default.
-  CHECK(win::IsUser32AndGdi32Available());
+  // TODO: CHECK(win::IsUser32AndGdi32Available());
   // Perform character-wise upper case comparison rather than using the
   // fully Unicode-aware CompareString(). For details see:
   // http://blogs.msdn.com/michkap/archive/2005/10/17/481600.aspx

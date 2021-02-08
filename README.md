@@ -38,7 +38,7 @@ TreeArray | base/array/tree_array.h | 树型数组 | 已完成
 GUID | base/guid.h | 生成guid | 已完成
 Rand | base/rand_util.h | 产生简单的随机数 | 已完成
 String | base/string/string_utils.h | 提供字符串比较、判断开头和结尾等操作 | 部分完成，待后续完善
-File | base/file/file_path.h | 文件封装 | 待开发
+File | base/file/file_path.h | 文件封装 | 部分完成,待完善
 IPCHandler | base/ipc/ipc_handler.h | 封装跨平台进程间通信 | 待开发
 Process | base/process/process.h | 封装跨平台进程创建和运行 | 待开发
 TCPServer | base/net/tcp_server.h | 封装跨平台tcp server(两种网络模型) | 待开发
@@ -500,3 +500,45 @@ AnsiToUnicode | char* 转 wchar_t* 或者 string转wstring | 两个版本
 UnicodeToAnsi | wchar_t*转char* 或者wstring转string |
 
 具体实例，请参考单元测试：`src/test/string/string_unittest.cc`。
+
+## File
+提供文件封装操作。
+
+### FilePath
+文件路径：`src/base/file/file_path.h`. 
+
+接口：
+函数或接口 | 说明 | 注意事项
+-- | -- | --
+empty | 判断路径是否为空 |
+clear | 将路径置空 |
+IsSeparator | 判断是否是路径分隔符 | Linux上分隔符是`/`，windows上是`/`或者`\`
+GetComponents | 将路径按照分隔符拆开，以vector形式返回各个部分| Linux：`"/foo/bar"  ->  [ "/", "foo", "bar" ]` <br/> Windows：`"C:\foo\bar"  ->  [ "C:", "\\", "foo", "bar" ]`
+IsParent | 判断当前路径是否是指定路径的父路径 |
+AppendRelativePath | 当`child`是当前目录的子目录时，就更换父目录；如果不是，直接返回false
+DirName | 目录名 | 如果只有文件名，那么返回的是`.`
+BaseName | 文件名 | 除开目录名
+Extension | 返回文件扩展名 | 注意带`.`,即`*.jpg`会返回`.jpg`
+FinalExtension | 返回最后一个文件扩展名 | 如`*.tar.gz`就会返回`*.gz`
+RemoveExtension | 将整个文件扩展名全部删除 | 
+RemoveFinalExtension | 只移除最后的扩展名 | 如`*.tar.gz`移除后就是`*.tar`
+InsertBeforeExtension | 在文件扩展前加入指定字符 | 
+AddExtension | 添加指定文件扩展 | 扩展本身带不带`.`都可以
+MatchesExtension | 判断当前文件的扩展名是否和指定类型匹配 | 扩展本身带不带`.`都可以
+Append | 拼接路径 | 也就是将各段路径自动加上和系统匹配的分隔符
+IsAbsolute | 判断是否是绝对路径 |
+EndsWithSeparator | 判断路径结尾是否带分隔符 |
+AsEndingWithSeparator | 如果路径本身末尾不带分隔符，那么这个接口就返回带上分隔符的副本 | 
+StripTrailingSeparators | 合并重复的分隔符 | 如`\\\\`就会被合并成`\`
+ReferencesParent | 判断路径中是否有`..` |
+LossyDisplayName | 返回显示名 | std::wstring
+MaybeAsASCII | 返回显示名 | std::string
+FromUTF8Unsafe | 静态函数，从std::string创建一个FilePath对象 | 
+FromUTF16Unsafe | 静态函数，从std::wstring创建一个FilePath对象
+NormalizePathSeparators | 将windows上的分隔符标准化 | 即会用`\`代替`/`
+CompareIgnoreCase | 静态函数，比较两个字符串大小 |
+CompareEqualIgnoreCase | 静态函数，比较两个字符串是否相等 |
+CompareLessIgnoreCase | 静态函数，比较前面的字符串是否比后面的字符串小
+
+使用实例可以参考单元测试`src\test\file\file_path_unittest.cc`.
+

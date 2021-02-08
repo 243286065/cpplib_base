@@ -1,5 +1,6 @@
 #include "base/string/string_utils.h"
 #include "base/string/string_utils_internal.h"
+#include "base/string/string_convert.h"
 
 #include <ctype.h>
 #include <stdarg.h>   // va_list
@@ -121,8 +122,9 @@ bool LowerCaseEqualsASCII(const std::string& str,
   return internal::DoLowerCaseEqualsASCII(str, lowercase_ascii);
 }
 bool LowerCaseEqualsASCII(const std::wstring& str,
-                          const std::wstring& lowercase_ascii) {
-  return internal::DoLowerCaseEqualsASCII(str, lowercase_ascii);
+                          const std::string& lowercase_ascii) {
+  std::string tmp = UnicodeToAnsi(str);
+  return internal::DoLowerCaseEqualsASCII(tmp, lowercase_ascii);
 }
 
 }  // namespace base

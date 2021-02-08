@@ -166,8 +166,8 @@ TEST(StringTest, LowerCaseEqualsASCII) {
 	EXPECT_TRUE(LowerCaseEqualsASCII("Abcdefghigk", "abcdefghigk"));
 	EXPECT_FALSE(LowerCaseEqualsASCII("Abcdefghigkl", "abcdefghigk"));
 
-	EXPECT_TRUE(LowerCaseEqualsASCII(L"Abcdefghigk", L"abcdefghigk"));
-	EXPECT_FALSE(LowerCaseEqualsASCII(L"Abcdefghigkl", L"abcdefghigk"));
+	EXPECT_TRUE(LowerCaseEqualsASCII(L"Abcdefghigk", "abcdefghigk"));
+	EXPECT_FALSE(LowerCaseEqualsASCII(L"Abcdefghigkl", "abcdefghigk"));
 }
 
 }  // namespace base

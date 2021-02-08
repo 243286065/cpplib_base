@@ -115,5 +115,5 @@ BASE_EXPORT std::vector<std::string> SplitStr(const std::string& s, char delim);
 BASE_EXPORT bool LowerCaseEqualsASCII(const std::string& str,
                                       const std::string& lowercase_ascii);
 BASE_EXPORT bool LowerCaseEqualsASCII(const std::wstring& str,
-                                      const std::wstring& lowercase_ascii);
+                                      const std::string& lowercase_ascii);
 } // namespace base
