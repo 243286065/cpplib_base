@@ -38,7 +38,7 @@ TreeArray | base/array/tree_array.h | 树型数组 | 已完成
 GUID | base/guid.h | 生成guid | 已完成
 Rand | base/rand_util.h | 产生简单的随机数 | 已完成
 String | base/string/string_utils.h | 提供字符串比较、判断开头和结尾等操作 | 部分完成，待后续完善
-File | base/file/file.h | 文件跨平台封装 | 待开发
+File | base/file/file_path.h | 文件封装 | 待开发
 IPCHandler | base/ipc/ipc_handler.h | 封装跨平台进程间通信 | 待开发
 Process | base/process/process.h | 封装跨平台进程创建和运行 | 待开发
 TCPServer | base/net/tcp_server.h | 封装跨平台tcp server(两种网络模型) | 待开发

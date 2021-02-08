@@ -109,4 +109,11 @@ BASE_EXPORT bool IsDigitStrs(const std::string& str);
 BASE_EXPORT bool IsDigitStrs(const std::wstring& str);
 
 BASE_EXPORT std::vector<std::string> SplitStr(const std::string& s, char delim);
+
+// Compare the lower-case form of the given string against the given
+// previously-lower-cased ASCII string (typically a constant).
+BASE_EXPORT bool LowerCaseEqualsASCII(const std::string& str,
+                                      const std::string& lowercase_ascii);
+BASE_EXPORT bool LowerCaseEqualsASCII(const std::wstring& str,
+                                      const std::wstring& lowercase_ascii);
 } // namespace base

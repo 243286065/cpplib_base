@@ -116,4 +116,13 @@ std::vector<std::string> SplitStr(const std::string& s, char delim) {
   return elems;
 }
 
+bool LowerCaseEqualsASCII(const std::string& str,
+                          const std::string& lowercase_ascii) {
+  return internal::DoLowerCaseEqualsASCII(str, lowercase_ascii);
+}
+bool LowerCaseEqualsASCII(const std::wstring& str,
+                          const std::wstring& lowercase_ascii) {
+  return internal::DoLowerCaseEqualsASCII(str, lowercase_ascii);
+}
+
 }  // namespace base

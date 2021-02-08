@@ -106,6 +106,11 @@ bool EndsWithT(const Str& str,
   }
 }
 
+template <typename Str>
+inline bool DoLowerCaseEqualsASCII(const Str& str, const Str& lowercase_ascii) {
+  return ToLowerASCII(str) == lowercase_ascii;
+}
+
 } // namespace internal
 } // namespace base
 

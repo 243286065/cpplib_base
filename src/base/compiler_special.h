@@ -1,6 +1,8 @@
 #ifndef SRC_BASE_COMPILER_SEPICAL_H_
 #define SRC_BASE_COMPILER_SEPICAL_H_
 
+#include <type_traits>
+
 // Tell the compiler a function is using a printf-style format string.
 // |format_param| is the one-based index of the format string parameter;
 // |dots_param| is the one-based index of the "..." parameter.
