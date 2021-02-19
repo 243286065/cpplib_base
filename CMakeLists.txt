@@ -137,26 +137,30 @@ add_executable(demo ${demoSrc})
 target_link_libraries(demo base)
 
 
-#Unit test
-add_subdirectory(src/base/third_party/googletest)
-enable_testing()
-include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+option(UNITTEST_FLAG "option for unittest" ON)
+if(UNITTEST_FLAG)
+    #Unit test
+    add_subdirectory(src/base/third_party/googletest)
+    enable_testing()
+    include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
-set(
-    unittestSrc
-    src/base/testing/test_main.cc
-    src/test/hash/crc32_unittest.cc
-    src/test/hash/md5_unittest.cc
-    src/test/json/json_unittest.cc
-    src/test/guid/guid_unittest.cc
-    src/test/guid/rand_unittest.cc
-    src/test/string/string_unittest.cc
-)
+    set(
+        unittestSrc
+        src/base/testing/test_main.cc
+        src/test/hash/crc32_unittest.cc
+        src/test/hash/md5_unittest.cc
+        src/test/json/json_unittest.cc
+        src/test/guid/guid_unittest.cc
+        src/test/guid/rand_unittest.cc
+        src/test/string/string_unittest.cc
+    )
 
-add_executable(base_unittest ${unittestSrc})
-target_link_libraries(base_unittest gtest gtest_main)
-target_link_libraries(base_unittest ${PROJECT_NAME})
+    add_executable(base_unittest ${unittestSrc})
+    target_link_libraries(base_unittest gtest gtest_main)
+    target_link_libraries(base_unittest ${PROJECT_NAME})
 
-# This is so you can do 'make test' to see all your tests run, instead of
-# manually running the executable runUnitTests to see those specific tests.
-add_test(NAME test COMMAND base_unittest)
+    # This is so you can do 'make test' to see all your tests run, instead of
+    # manually running the executable runUnitTests to see those specific tests.
+    add_test(NAME test COMMAND base_unittest)
+
+endif()
