@@ -10,6 +10,8 @@ namespace base
 TEST(FilePathTest, NormalFunctionLinux) {
   FilePath path("/tmp//test.txt");
   FilePath new_path(path);
+  EXPECT_EQ(FilePath("test").DirName().value(), ".");
+  EXPECT_EQ(FilePath("test.jpg").InsertBeforeExtension("123").value(), "test123.jpg");
   EXPECT_EQ(new_path.BaseName().value(), "test.txt");
   EXPECT_EQ(new_path.DirName().value(), "/tmp");
   EXPECT_EQ(new_path.NormalizePathSeparators().value(), "/tmp//test.txt");
